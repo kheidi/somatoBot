@@ -1,0 +1,99 @@
+-------------------------------------------------------
+Body 1
+
+General
+	Part Number	link1
+	Part Name	link1 v7
+	Description
+	Material Name	ABS Plastic
+
+Manage
+	Item Number
+	Lifecycle
+	Revision
+	State	Working
+	Change Order
+
+Physical
+	Mass	36.078 g
+	Volume	34036.155 mm^3
+	Density	0.001 g / mm^3
+	Area	12577.043 mm^2
+	World X,Y,Z	0.00 mm, 0.00 mm, 0.00 mm
+	Center of Mass	0.00 mm, 81.585 mm, 10.852 mm
+	Bounding Box
+		Length	30.00 mm
+		Width	214.50 mm
+		Height	16.00 mm
+	Moment of Inertia at Center of Mass   (g mm^2)
+		Ixx	1.471E+05
+		Ixy	-6.897E-09
+		Ixz	8.152E-10
+		Iyx	-6.897E-09
+		Iyy	1574.001
+		Iyz	-3377.956
+		Izx	8.152E-10
+		Izy	-3377.956
+		Izz	1.477E+05
+	Moment of Inertia at Origin   (g mm^2)
+		Ixx	3.915E+05
+		Ixy	-2.343E-08
+		Ixz	-1.384E-09
+		Iyx	-2.343E-08
+		Iyy	5823.096
+		Iyz	-35321.401
+		Izx	-1.384E-09
+		Izy	-35321.401
+		Izz	3.878E+05
+
+
+-------------------------------------------------------
+Body 2
+
+General
+	Part Number	link2
+	Part Name	link2 v12
+	Description
+	Material Name	ABS Plastic
+
+Manage
+	Item Number
+	Lifecycle
+	Revision
+	State	Working
+	Change Order
+
+Physical
+	Mass	41.613 g
+	Volume	39257.799 mm^3
+	Density	0.001 g / mm^3
+	Area	13796.102 mm^2
+	World X,Y,Z	0.00 mm, 0.00 mm, 0.00 mm
+	Center of Mass	0.024 mm, 61.884 mm, 6.792 mm
+	Bounding Box
+		Length	35.821 mm
+		Width	199.435 mm
+		Height	24.00 mm
+	Moment of Inertia at Center of Mass   (g mm^2)
+		Ixx	1.573E+05
+		Ixy	-38.17
+		Ixz	2.836
+		Iyx	-38.17
+		Iyy	3161.447
+		Iyz	7189.511
+		Izx	2.836
+		Izy	7189.511
+		Izz	1.576E+05
+	Moment of Inertia at Origin   (g mm^2)
+		Ixx	3.186E+05
+		Ixy	-101.028
+		Ixz	-4.063
+		Iyx	-101.028
+		Iyy	5081.053
+		Iyz	-10300.753
+		Izx	-4.063
+		Izy	-10300.753
+		Izz	3.169E+05
+
+
+

@@ -1,15 +1,16 @@
-%% Somato-Bot Torqye Estimates
+%% Somato-Bot Torque Estimates
+close all; clear;
 %% Physical Properties
-I_L1_o = 3354.028*(10^-9); %Iyy at origen (kg mˆ2)
-m1 = 22.877/1000; %gr
+I_L1_o = 3.878E+05*(10^-9); %Iyy at origen (kg mˆ2)
+m1 = 36.078/1000; %kg
 
-I_L2_o = 60242.454*(10^-9); %Iyy at origen (kg mˆ2)
-m2 = 15.799/1000; %g
+I_L2_o = 3.169E+05*(10^-9); %Iyy at origen (kg mˆ2)
+m2 = 41.613/1000; %g
 
-l_L2 = 130/1000; %m
+l_L2 = 190.755/1000; %m
 
 %% Acceleration
-t = 0.5:0.01:3; %s
+t = 0.2:0.01:3; %s
 theta_travelled = degtorad(180); %rad
 alpha = (2*theta_travelled)./(t.^2); %rad/s2
 
