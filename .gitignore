@@ -1,6 +1,6 @@
 # User ignores
 Icon?
-
+.DS_Store
 # Prerequisites
 *.d
 
