@@ -1,11 +1,11 @@
 %% Somato-Bot Torque Estimates
 close all; clear;
 %% Physical Properties
-I_L1_o = 3.878E+05*(10^-9); %Iyy at origen (kg mˆ2)
-m1 = 36.078/1000; %kg
+I_L1_o = 2.038E+05*(10^-9); %Izz at origen (kg mˆ2)
+m1 = 30.263/1000; %kg
 
-I_L2_o = 3.169E+05*(10^-9); %Iyy at origen (kg mˆ2)
-m2 = 41.613/1000; %g
+I_L2_o = 1.362E+05*(10^-9); %Izz at origen (kg mˆ2)
+m2 = 29.988/1000; %g
 
 l_L2 = 190.755/1000; %m
 
@@ -25,22 +25,30 @@ I_sum = I_L1_o + I_L2_o + m2*(l_L2^2); %kg m^2
 torque = (I_sum.*alpha); %Nm
 power = torque.*(theta_travelled./t); %W
 
+torque = torque * 10.197162129779; %convert to kg cm
 figure
+subplot(2,2,1)
 plot(RPM,torque)
 xlabel('RPM')
-ylabel('Torque (Nm)')
+ylabel('Torque (kg cm)')
+yline(0.54)
+yline(0.86)
+xline(0.25)
 
-figure
+subplot(2,2,2)
 plot(t,torque)
 xlabel('Time to travel 180 deg (s)')
-ylabel('Torque (Nm')
+ylabel('Torque (kg cm)')
+yline(0.54)
+yline(0.86)
+xline(0.25)
 
-figure
+subplot(2,2,3)
 plot(RPM, power)
 xlabel('RPM')
 ylabel('Power')
 
-figure
+subplot(2,2,4)
 plot(t, power)
 xlabel('Time to travel 180 deg')
 ylabel('Power')
