@@ -3,6 +3,7 @@ Icon?
 *.hci
 *.cci
 PWMDevel/Debug
+.vscode
 
 *.cof
 PWMDevel/.vs

@@ -1,7 +1,7 @@
 /*******************************************************
 This program was created by the CodeWizardAVR V3.31 
 Automatic Program Generator
-© Copyright 1998-2017 Pavel Haiduc, HP InfoTech s.r.l.
+ï¿½ Copyright 1998-2017 Pavel Haiduc, HP InfoTech s.r.l.
 http://www.hpinfotech.com
 
 Project : PWMDevel - SomatoBot
@@ -9,8 +9,8 @@ Version : v1
 Date    : 12/4/2021
 Author  : Katherine Heidi Fehr
 Company : 
-Comments: 
-
+Comments: Code to test and develop pwmControl of motors for
+          Somatobot project.
 
 Chip type               : ATmega328P
 Program type            : Application
@@ -66,7 +66,8 @@ PORTD=(0<<PORTD7) | (0<<PORTD6) | (0<<PORTD5) | (0<<PORTD4) | (0<<PORTD3) | (0<<
 // OC0B output: Non-Inverted PWM
 // Timer Period: 0.016 ms
 // Output Pulse(s):
-// OC0A Period: 0.016 ms Width: 0 us// OC0B Period: 0.016 ms Width: 0 us
+// OC0A Period: 0.016 ms Width: 0 us
+// OC0B Period: 0.016 ms Width: 0 us
 pwm_init_timer0_A();
 
 // Timer/Counter 1 initialization
@@ -100,7 +101,8 @@ OCR1BL=0x00;
 // OC2B output: Non-Inverted PWM
 // Timer Period: 0.016 ms
 // Output Pulse(s):
-// OC2A Period: 0.016 ms Width: 0 ms// OC2B Period: 0.016 ms Width: 0 us
+// OC2A Period: 0.016 ms Width: 0 ms
+// OC2B Period: 0.016 ms Width: 0 us
 pwm_init_timer2_B();
 
 // Timer/Counter 0 Interrupt(s) initialization
