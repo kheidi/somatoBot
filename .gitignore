@@ -1,5 +1,15 @@
 # User ignores
 Icon?
+*.hci
+*.cci
+PWMDevel/Debug
+
+*.cof
+PWMDevel/.vs
+*.fct
+*.prj~
+*.c~
+*.h~
 
 # Prerequisites
 *.d

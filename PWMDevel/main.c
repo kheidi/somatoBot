@@ -4,10 +4,10 @@ Automatic Program Generator
 © Copyright 1998-2017 Pavel Haiduc, HP InfoTech s.r.l.
 http://www.hpinfotech.com
 
-Project : 
-Version : 
+Project : PWMDevel - SomatoBot
+Version : v1
 Date    : 12/4/2021
-Author  : 
+Author  : Katherine Heidi Fehr
 Company : 
 Comments: 
 
@@ -21,13 +21,16 @@ Data Stack size         : 512
 *******************************************************/
 
 #include <io.h>
+#include <stdlib.h>
+#include "pwmControl.h" 
+#include "generalFunctions.h"
 
 // Declare your global variables here
 
 void main(void)
 {
 // Declare your local variables here
-
+int myTest;
 // Crystal Oscillator division factor: 1
 #pragma optsize-
 CLKPR=(1<<CLKPCE);
@@ -63,12 +66,8 @@ PORTD=(0<<PORTD7) | (0<<PORTD6) | (0<<PORTD5) | (0<<PORTD4) | (0<<PORTD3) | (0<<
 // OC0B output: Non-Inverted PWM
 // Timer Period: 0.016 ms
 // Output Pulse(s):
-// OC0A Period: 0.016 ms Width: 0.31373 us// OC0B Period: 0.016 ms Width: 0 us
-TCCR0A=(1<<COM0A1) | (0<<COM0A0) | (1<<COM0B1) | (0<<COM0B0) | (1<<WGM01) | (1<<WGM00);
-TCCR0B=(0<<WGM02) | (0<<CS02) | (0<<CS01) | (1<<CS00);
-TCNT0=0x00;
-OCR0A=0x05;
-OCR0B=0x00;
+// OC0A Period: 0.016 ms Width: 0 us// OC0B Period: 0.016 ms Width: 0 us
+pwm_init_timer0_A();
 
 // Timer/Counter 1 initialization
 // Clock source: System Clock
@@ -101,13 +100,8 @@ OCR1BL=0x00;
 // OC2B output: Non-Inverted PWM
 // Timer Period: 0.016 ms
 // Output Pulse(s):
-// OC2A Period: 0.016 ms Width: 0.015937 ms// OC2B Period: 0.016 ms Width: 0 us
-ASSR=(0<<EXCLK) | (0<<AS2);
-TCCR2A=(1<<COM2A1) | (0<<COM2A0) | (1<<COM2B1) | (0<<COM2B0) | (1<<WGM21) | (1<<WGM20);
-TCCR2B=(0<<WGM22) | (0<<CS22) | (0<<CS21) | (1<<CS20);
-TCNT2=0x00;
-OCR2A=0xFE;
-OCR2B=0x00;
+// OC2A Period: 0.016 ms Width: 0 ms// OC2B Period: 0.016 ms Width: 0 us
+pwm_init_timer2_B();
 
 // Timer/Counter 0 Interrupt(s) initialization
 TIMSK0=(0<<OCIE0B) | (0<<OCIE0A) | (0<<TOIE0);
@@ -155,6 +149,11 @@ SPCR=(0<<SPIE) | (0<<SPE) | (0<<DORD) | (0<<MSTR) | (0<<CPOL) | (0<<CPHA) | (0<<
 // TWI initialization
 // TWI disabled
 TWCR=(0<<TWEA) | (0<<TWSTA) | (0<<TWSTO) | (0<<TWEN) | (0<<TWIE);
+
+myTest = map(5,0,100,0,200);
+
+//Test run motor code
+runMotor(50,"A" , "CCW");
 
 while (1)
       {
