@@ -1,5 +1,11 @@
 # User ignores
 Icon?
+.DS_Store
+\test_heidi_notgit
+.vscode
+*.json
+\.obsidian
+
 
 # Prerequisites
 *.d
