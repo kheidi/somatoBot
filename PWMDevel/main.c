@@ -20,6 +20,12 @@ External RAM size       : 0
 Data Stack size         : 512
 *******************************************************/
 
+/**
+ * TODO: Decide if keeping ramp up delay
+ * TODO: Measure speed of motor based on encoder at different levels of power
+ * TODO: Encoder control?
+ */
+
 #include <io.h>
 #include <stdlib.h>
 #include "pwmControl.h" 
@@ -155,7 +161,9 @@ TWCR=(0<<TWEA) | (0<<TWSTA) | (0<<TWSTO) | (0<<TWEN) | (0<<TWIE);
 myTest = map(5,0,100,0,200);
 
 //Test run motor code
-runMotor(50,"A" , "CCW");
+runMotor(50, MOTOR_A, CCW);
+
+
 
 while (1)
       {

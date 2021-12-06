@@ -27,7 +27,6 @@ Data Stack size         : 512
 #include <string.h>
 #include "pwmControl.h" 
 #define __DELAY_BACKWARD_COMPATIBLE__ //Needed for delay function/library
-#define delayTime 3  //Pick a nice delay time to ramp up motor speed
 
 /*
 ** ===================================================================
@@ -77,6 +76,8 @@ void pwm_init_timer0_A()
 */
 void pwm_init_timer2_B()
 {
+    // Change corresponding ports to inputs
+    DDRB |= (1<<DDB3);
      // Timer/Counter 2 initialization
     // Clock source: System Clock
     // Clock value: 16000.000 kHz
@@ -113,21 +114,24 @@ void pwm_init_timer2_B()
 ** Parameters:
 **      NAME            - DESCRIPTION
 **      percentMaxPower - Number from 0-100 that indicates amount of power to supply to motor
-**      motorID         - String to indicate desired motor either "A" or "B"
-**      direction       - Direction to spin motor, string either "CW" or "CCW"
+**      motorID         - String to indicate desired motor either 0 for "A" or 1 for "B"
+**      direction       - Direction to spin motor, string either 0 for "CCW" or 0 for "CCW"
+**
+**      **If using macros from pwmControl.h use MOTOR_A and MOTOR_B for motor ID
+**        and CCW and CW for direction.
 **
 ** ===================================================================
 */
-void runMotor(long percentMaxPower, const char* motorID, const char* direction)
+void runMotor(long percentMaxPower, int motorID, int direction)
 {
     int sendToMotor;
     int speed;
     sendToMotor = (int)map(percentMaxPower,0,100,0,255); //Converts the percent power to a value from 0 255 for the 8-bit timers
 
     // ------- MOVE MOTOR A
-    if (strcmp(motorID, "A") != 0) // 
+    if (motorID == 0) // 
     {
-        if (strcmp(direction, "CCW") != 0) //Port D, pin 6 set duty cycle, direction A
+        if (direction == 0) //Port D, pin 6 set duty cycle, direction A
         {
             for (speed = 0; speed < sendToMotor; speed++)
             {
@@ -135,7 +139,7 @@ void runMotor(long percentMaxPower, const char* motorID, const char* direction)
                 delay_us(delayTime);
             }
         }
-        if (strcmp(direction, "CW") != 0) //Port D, pin 5 set duty cycle, direction B
+        if (direction == 1) //Port D, pin 5 set duty cycle, direction B
         {
             for (speed = 0; speed < sendToMotor; speed++)
             {
@@ -145,9 +149,9 @@ void runMotor(long percentMaxPower, const char* motorID, const char* direction)
         }
 
     // ------- MOVE MOTOR B    
-    } else if (strcmp(motorID, "B") != 0) // Move motor B
+    } else if (motorID == 1) != 0) // Move motor B
     {
-        if (strcmp(direction, "CCW") != 0) //Port B, pin 3 set duty cycle, direction A
+        if (direction == 0) != 0) //Port B, pin 3 set duty cycle, direction A
         {
             for (speed = 0; speed < sendToMotor; speed++)
             {
@@ -155,7 +159,7 @@ void runMotor(long percentMaxPower, const char* motorID, const char* direction)
                 delay_us(delayTime);
             }
         }
-        if (strcmp(direction, "CW") != 0) //Port D, pin 3 set duty cycle, direction B
+        if (direction == 1) //Port D, pin 3 set duty cycle, direction B
         {
             for (speed = 0; speed < sendToMotor; speed++)
             {
@@ -165,4 +169,70 @@ void runMotor(long percentMaxPower, const char* motorID, const char* direction)
         }
     }
     
+}
+
+
+//! Change description
+/*
+** ===================================================================
+** Method        : readEncoder
+**
+** Description   :  takes in an 8-bit number representing the encoder channel number, 
+**                  reads the value from the correct encoder channel and returns 
+**                  the full encoder count (i.e. full dynamic range) in addition 
+**                  to an error if an invalid channel number is used.  Valid channels are 0-2.
+**
+** Parameters:
+**      NAME            - DESCRIPTION
+**      channelNum      - encoder channel you want to write to
+**
+** Returns:
+**       local_enc      - An encodermodel struct that contains 'EncoderCount' and 'Error'.
+**                        the encoder count reads the raw count from the encoder
+**                        and error is an error message.
+**             
+**
+** ===================================================================
+*/
+//! Declare in h file once ready
+struct encodermodel readEncoders(char encoderChannelNum)
+{
+
+	// unsigned char valueHigh;
+	// unsigned char valueLow;
+	// char high_set;
+	// char high_clear;
+	// char low_set;
+	// char low_clear;
+    // struct encodermodel local_enc;
+    // // Error return if an invalid channel no. is used
+    // if (encoderChannelNum>2){
+    //     local_enc.Error = NOT_SUPPORTED_CHANNEL;
+    // }
+	
+	// high_clear = (2*encoderChannelNum) + 6; //Sets actual channel (cleared/enabled version)
+    // high_set = (high_clear | 0b00100000);   //Disables the port
+	
+	// low_clear = (2*encoderChannelNum) + 7; //Sets actual channel (cleared/enabled version)
+	// low_set = (low_clear | 0b00100000);    //Disables the port
+    
+    // DATA_mode = setINPUT; 
+	// ADDR_write = high_set;          //Configure data bus PORT as input
+	// delay_us(1);
+    // ADDR_write = high_clear;        //Gate signal LOW
+    // delay_us(1);                    //Wait for decoder output to propagate
+    // valueHigh = 0x0F&DATA_read;     //Read data bus PIN into the MCU
+    // ADDR_write = high_set;          //Set gate signal to disable decoder chip
+	
+	// ADDR_write = low_set; 
+	// delay_us(1); 
+	// ADDR_write = low_clear;         //Gate signal LOW
+	// delay_us(1);                    //Wait for decoder output to propagate
+	// valueLow = DATA_read;           //Read data bus PIN into the MCU
+	// ADDR_write = low_set;           //Set gate signal to disable decoder chip
+    
+	
+	// local_enc.EncoderCount = ((int)valueHigh<<8 | valueLow); //shift the high value and combine with the Low value so it is all stored in the 16 bit int
+	// local_enc.Error = SUCCESS;
+	// return local_enc;
 }

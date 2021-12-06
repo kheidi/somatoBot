@@ -25,6 +25,34 @@ Data Stack size         : 512
 #include <io.h>
 #include "generalFunctions.h"
 
+#define MOTOR_A 0
+#define MOTOR_B 1
+#define CCW 0
+#define CW 1
+#define delayTime 3  //us Pick a nice delay time to ramp up motor speed
+
+/*
+** ------------------------------------------------------------------
+* Global Variables
+** -----------------------------------------------------------------
+*/
+volatile int motorACount;
+volatile int motorBCount;
+
+/*
+** ------------------------------------------------------------------
+* STRUCTS
+** -----------------------------------------------------------------
+*/
+
+// Struct definition for output readEncoder function(below)
+struct encodermodel{
+	
+	int EncoderCount;
+	char Error;
+	
+};
+
 /*
 ** ===================================================================
 ** Method        : pwm_init_timer0_A
@@ -61,4 +89,4 @@ void pwm_init_timer2_B();
 **
 ** ===================================================================
 */
-void runMotor(long percentMaxPower, const char* motorID, const char* direction);
+void runMotor(long percentMaxPower, int motorID, int direction);
