@@ -36,8 +36,21 @@ Data Stack size         : 512
 * Global Variables
 ** -----------------------------------------------------------------
 */
-// volatile int motorACount;
-// volatile int motorBCount;
+
+// --- For encoder counter:
+volatile int motorACount = 0;
+volatile int motorBCount = 0;
+
+//pin history time 
+volatile uint8_t PINBhistory = 0x00;  //this could cause an error depending on start state
+
+char stateChangeTable[4][4] = //
+{
+    { 0,-1, 1, 0},
+    { 1, 0, 0,-1},
+    {-1, 0, 0, 1},
+    { 0, 1,-1, 0}
+};
 
 /*
 ** ------------------------------------------------------------------

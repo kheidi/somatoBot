@@ -34,6 +34,7 @@ Data Stack size         : 512
 
 // Declare your global variables here
 int i;
+
 void main(void)
 {
 // Declare your local variables here
@@ -127,9 +128,7 @@ TIMSK2=(0<<OCIE2B) | (0<<OCIE2A) | (0<<TOIE2);
 // Interrupt on any change on pins PCINT0-7: Off
 // Interrupt on any change on pins PCINT8-14: Off
 // Interrupt on any change on pins PCINT16-23: Off
-EICRA=(0<<ISC11) | (0<<ISC10) | (0<<ISC01) | (0<<ISC00);
-EIMSK=(0<<INT1) | (0<<INT0);
-PCICR=(0<<PCIE2) | (0<<PCIE1) | (0<<PCIE0);
+PCINT_Encoder_init();
 
 // USART initialization
 // USART disabled

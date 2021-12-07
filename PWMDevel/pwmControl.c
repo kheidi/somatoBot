@@ -105,6 +105,70 @@ void pwm_init_timer2_B()
     OCR2B=0x00; //Port D, pin 3 set duty cycle, direction B
 }
 
+void PCINT_Encoder_init()
+{
+    // Only the following PCINTs are enabled
+    // as they are where the encoders are connected.
+    //
+    // PCINT0 / D8 / PB0
+    // PCINT1 / D9 / PB1
+    // PCINT2 / D10 / PB2
+    // PCINT4 / D12 / PB4
+    //
+    // External Interrupt(s) initialization
+    // INT0: Off
+    // INT1: Off
+    // Interrupt on any change on pins PCINT0-7: On
+    // Interrupt on any change on pins PCINT8-14: Off
+    // Interrupt on any change on pins PCINT16-23: Off
+    EICRA=(0<<ISC11) | (0<<ISC10) | (0<<ISC01) | (0<<ISC00);
+    EIMSK=(0<<INT1) | (0<<INT0);
+    PCICR=(0<<PCIE2) | (0<<PCIE1) | (1<<PCIE0);
+    PCMSK0=(0<<PCINT7) | (0<<PCINT6) | (0<<PCINT5) | (1<<PCINT4) | (0<<PCINT3) | (1<<PCINT2) | (1<<PCINT1) | (1<<PCINT0);
+    PCIFR=(0<<PCIF2) | (0<<PCIF1) | (1<<PCIF0);
+}
+
+// Pin change 0-7 interrupt service routine
+
+interrupt [PC_INT0] void pin_change_isr0(void)
+{
+    // Only the following PCINTs are enabled
+    // as they are where the encoders are connected.
+    //
+    // PCINT0 / D8 / PB0
+    // PCINT1 / D9 / PB1
+    // PCINT2 / D10 / PB2
+    // PCINT4 / D12 / PB4
+
+    // Adapted from encoderCounter.ino by Alex Dawson-Elli
+
+    //history and current pin terms
+    uint8_t PINBcurrent = PINB & 0b00010111; //grab only the relevant pins
+    uint8_t changedbits = PINBcurrent ^ PINBhistory;
+    
+    //mask bits
+    uint8_t motorAMask = 0b00000011;
+    uint8_t motorBMask = 0b00010100;
+
+
+    //read and update Crank 
+     if(changedbits & motorAMask) //something has changed in Crank's state
+    {
+        motorACount += stateChangeTable[(PINBhistory & motorAMask)][(PINBcurrent & motorAMask)];
+    }
+    
+    //read and update RightPedal
+    if(changedbits & motorBMask) //something has changed in RightPedal's state
+    {
+        //! Need to fix this so that the bit shifting works with the blank space... somehow?
+        motorBCount += stateChangeTable[((PINBhistory & motorBMask) >> 2)][((PINBcurrent & motorBMask) >> 2)];  
+    }
+
+    PINBhistory = PINBcurrent;   
+
+
+}
+
 /*
 ** ===================================================================
 ** Method        : runMotor
