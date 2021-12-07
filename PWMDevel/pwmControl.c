@@ -136,6 +136,7 @@ void runMotor(long percentMaxPower, int motorID, int direction)
             for (speed = 0; speed < sendToMotor; speed++)
             {
                 OCR0A = speed;
+				OCR0B = 0;
                 delay_us(delayTime);
             }
         }
@@ -143,19 +144,21 @@ void runMotor(long percentMaxPower, int motorID, int direction)
         {
             for (speed = 0; speed < sendToMotor; speed++)
             {
+				OCR0A = 0;
                 OCR0B = speed;
                 delay_us(delayTime);
             }
         }
 
     // ------- MOVE MOTOR B    
-    } else if (motorID == 1) != 0) // Move motor B
+    } else if ((motorID == 1) != 0) // Move motor B
     {
-        if (direction == 0) != 0) //Port B, pin 3 set duty cycle, direction A
+        if ((direction == 0) != 0) //Port B, pin 3 set duty cycle, direction A
         {
             for (speed = 0; speed < sendToMotor; speed++)
             {
                 OCR2A = speed;
+				OCR2B = 0;
                 delay_us(delayTime);
             }
         }
@@ -163,6 +166,7 @@ void runMotor(long percentMaxPower, int motorID, int direction)
         {
             for (speed = 0; speed < sendToMotor; speed++)
             {
+				OCR2A = 0;
                 OCR2B = speed;
                 delay_us(delayTime);
             }
@@ -195,44 +199,44 @@ void runMotor(long percentMaxPower, int motorID, int direction)
 ** ===================================================================
 */
 //! Declare in h file once ready
-struct encodermodel readEncoders(char encoderChannelNum)
-{
-
-	// unsigned char valueHigh;
-	// unsigned char valueLow;
-	// char high_set;
-	// char high_clear;
-	// char low_set;
-	// char low_clear;
-    // struct encodermodel local_enc;
-    // // Error return if an invalid channel no. is used
-    // if (encoderChannelNum>2){
-    //     local_enc.Error = NOT_SUPPORTED_CHANNEL;
-    // }
-	
-	// high_clear = (2*encoderChannelNum) + 6; //Sets actual channel (cleared/enabled version)
-    // high_set = (high_clear | 0b00100000);   //Disables the port
-	
-	// low_clear = (2*encoderChannelNum) + 7; //Sets actual channel (cleared/enabled version)
-	// low_set = (low_clear | 0b00100000);    //Disables the port
-    
-    // DATA_mode = setINPUT; 
-	// ADDR_write = high_set;          //Configure data bus PORT as input
-	// delay_us(1);
-    // ADDR_write = high_clear;        //Gate signal LOW
-    // delay_us(1);                    //Wait for decoder output to propagate
-    // valueHigh = 0x0F&DATA_read;     //Read data bus PIN into the MCU
-    // ADDR_write = high_set;          //Set gate signal to disable decoder chip
-	
-	// ADDR_write = low_set; 
-	// delay_us(1); 
-	// ADDR_write = low_clear;         //Gate signal LOW
-	// delay_us(1);                    //Wait for decoder output to propagate
-	// valueLow = DATA_read;           //Read data bus PIN into the MCU
-	// ADDR_write = low_set;           //Set gate signal to disable decoder chip
-    
-	
-	// local_enc.EncoderCount = ((int)valueHigh<<8 | valueLow); //shift the high value and combine with the Low value so it is all stored in the 16 bit int
-	// local_enc.Error = SUCCESS;
-	// return local_enc;
-}
+// struct encodermodel readEncoders(char encoderChannelNum)
+// {
+// 
+// 	// unsigned char valueHigh;
+// 	// unsigned char valueLow;
+// 	// char high_set;
+// 	// char high_clear;
+// 	// char low_set;
+// 	// char low_clear;
+//     // struct encodermodel local_enc;
+//     // // Error return if an invalid channel no. is used
+//     // if (encoderChannelNum>2){
+//     //     local_enc.Error = NOT_SUPPORTED_CHANNEL;
+//     // }
+// 	
+// 	// high_clear = (2*encoderChannelNum) + 6; //Sets actual channel (cleared/enabled version)
+//     // high_set = (high_clear | 0b00100000);   //Disables the port
+// 	
+// 	// low_clear = (2*encoderChannelNum) + 7; //Sets actual channel (cleared/enabled version)
+// 	// low_set = (low_clear | 0b00100000);    //Disables the port
+//     
+//     // DATA_mode = setINPUT; 
+// 	// ADDR_write = high_set;          //Configure data bus PORT as input
+// 	// delay_us(1);
+//     // ADDR_write = high_clear;        //Gate signal LOW
+//     // delay_us(1);                    //Wait for decoder output to propagate
+//     // valueHigh = 0x0F&DATA_read;     //Read data bus PIN into the MCU
+//     // ADDR_write = high_set;          //Set gate signal to disable decoder chip
+// 	
+// 	// ADDR_write = low_set; 
+// 	// delay_us(1); 
+// 	// ADDR_write = low_clear;         //Gate signal LOW
+// 	// delay_us(1);                    //Wait for decoder output to propagate
+// 	// valueLow = DATA_read;           //Read data bus PIN into the MCU
+// 	// ADDR_write = low_set;           //Set gate signal to disable decoder chip
+//     
+// 	
+// 	// local_enc.EncoderCount = ((int)valueHigh<<8 | valueLow); //shift the high value and combine with the Low value so it is all stored in the 16 bit int
+// 	// local_enc.Error = SUCCESS;
+// 	// return local_enc;
+// }

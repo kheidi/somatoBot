@@ -36,8 +36,8 @@ Data Stack size         : 512
 * Global Variables
 ** -----------------------------------------------------------------
 */
-volatile int motorACount;
-volatile int motorBCount;
+// volatile int motorACount;
+// volatile int motorBCount;
 
 /*
 ** ------------------------------------------------------------------

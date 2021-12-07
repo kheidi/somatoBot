@@ -28,11 +28,12 @@ Data Stack size         : 512
 
 #include <io.h>
 #include <stdlib.h>
+#include <delay.h>
 #include "pwmControl.h" 
 #include "generalFunctions.h"
 
 // Declare your global variables here
-
+int i;
 void main(void)
 {
 // Declare your local variables here
@@ -161,13 +162,48 @@ TWCR=(0<<TWEA) | (0<<TWSTA) | (0<<TWSTO) | (0<<TWEN) | (0<<TWIE);
 myTest = map(5,0,100,0,200);
 
 //Test run motor code
-runMotor(50, MOTOR_A, CCW);
-
 
 
 while (1)
       {
       // Place your code here
+
+// 		runMotor(0, MOTOR_A, CCW);
+// 		delay_us(1000000);
+// 		runMotor(25, MOTOR_A, CCW);
+// 		delay_us(1000000);
+// 		runMotor(50, MOTOR_A, CCW);
+// 		delay_us(1000000);
+
+// 		runMotor(60, MOTOR_A, CCW);
+// 		delay_us(1000000);
+// 		runMotor(60, MOTOR_A, CW);
+// 		delay_us(1000000);
+// 		runMotor(70, MOTOR_A, CCW);
+// 		delay_us(1000000);
+// 		runMotor(70, MOTOR_A, CW);
+// 		delay_us(1000000);
+// 		runMotor(80, MOTOR_A, CCW);
+// 		delay_us(1000000);
+// 		runMotor(80, MOTOR_A, CW);
+// 		delay_us(1000000);
+// 		runMotor(90, MOTOR_A, CCW);
+// 		delay_us(1000000);
+// 		runMotor(90, MOTOR_A, CW);
+// 		delay_us(1000000);
+// 		runMotor(100, MOTOR_A, CCW);
+// 		delay_us(1000000);
+// 		runMotor(100, MOTOR_A, CW);
+// 		delay_us(1000000);
+
+// 		runMotor(25, MOTOR_A, CW);
+// 		delay_us(1000000);
+// 		runMotor(50, MOTOR_A, CW);
+// 		delay_us(1000000);
+		runMotor(100, MOTOR_A, CW);
+		runMotor(0, MOTOR_B, CW);
+		//delay_us(1000000);
+
 
       }
 }
