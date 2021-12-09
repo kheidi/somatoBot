@@ -66,7 +66,7 @@ float Trajectory(float x0, float y0, float r, float w, float t)
     l1 = 153; //[mm]
     l2 = 140; //[mm]
     x=r*cos(2*pi*w*t)+x0;
-    y=r*sen(2*pi*w*t)+y0;
+    y=r*sin(2*pi*w*t)+y0;
 
     // Inverse Kinematics
     theta.theta2 = acos((pow(x,2)+pow(y,2)-pow(l1,2)-pow(l2,2))/(2*l1*l2)); //wrist down
