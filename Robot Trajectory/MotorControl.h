@@ -34,6 +34,17 @@ Functions used to control the trajectory of a two link robot.
 ** ===================================================================
 */
 
-float Trajectory(float x0, float y0, float r, float w, float t);
+struct theta Trajectory(float x0, float y0, float r, float w, float t);
+
+struct theta {
+  
+  float theta1;
+  float theta2;
+  float theta1_prev;
+  float theta2_prev;
+
+};
+
+
 
 	

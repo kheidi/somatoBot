@@ -37,31 +37,13 @@ Functions used to control the trajectory of a two link robot.
 #include <math.h>  // not sure where it goes (main.c?)
 #include "MotorControl.h"
 
-// float InverseKinematic(float x, float y)
-// {
-//     float theta1, theta2, l1, l2; //
-//     l1 = ;
-//     l2 = ;
+#define pi = 3.1514926535897
 
-//     theta2 = acos((pow(x,2)+pow(y,2)-pow(l1,2)-pow(l2,2))/(2*l1*l2)); //wrist down
-//     theta1 = atan(y/x) - atan((l2*sin(theta2))/(l1+a2*sin(theta2))) ; //wrist down
-
-//    return theta1, theta2; // creat struct to store these values. 
-// }
-
-//Struct to store values of theta
-struct theta {
-    float theta1;
-    float theta2;
-};
-
-typedef struct theta Struct; //not sure
-
-float Trajectory(float x0, float y0, float r, float w, float t)
+struct theta Trajectory(float x0, float y0, float r, float w, float t)
 {
-    Struct theta;
+    struct theta mytheta;
     //circular trajectory
-    float x, y, l1, l2; // this variable will be time depent
+    float x, y, l1, l2; // this variable will be time dependent
 
     l1 = 153; //[mm]
     l2 = 140; //[mm]
@@ -69,10 +51,10 @@ float Trajectory(float x0, float y0, float r, float w, float t)
     y=r*sin(2*pi*w*t)+y0;
 
     // Inverse Kinematics
-    theta.theta2 = acos((pow(x,2)+pow(y,2)-pow(l1,2)-pow(l2,2))/(2*l1*l2)); //wrist down
-    theta.theta1 = atan(y/x) - atan((l2*sin(theta2))/(l1+a2*sin(theta2))) ; //wrist down
+    mytheta.theta2 = acos((pow(x,2)+pow(y,2)-pow(l1,2)-pow(l2,2))/(2*l1*l2)); //wrist down
+    mytheta.theta1 = atan(y/x) - atan((l2*sin(output.theta.theta2))/(l1+l2*sin(output.theta.theta2))) ; //wrist down
     
-    return theta;
+    return mytheta; 
 
 }
 
