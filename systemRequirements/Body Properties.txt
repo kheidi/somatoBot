@@ -3,7 +3,7 @@ Body 1
 
 General
 	Part Number	link1
-	Part Name	link1 v7
+	Part Name	link1 v9
 	Description
 	Material Name	ABS Plastic
 
@@ -15,44 +15,43 @@ Manage
 	Change Order
 
 Physical
-	Mass	36.078 g
-	Volume	34036.155 mm^3
+	Mass	30.263 g
+	Volume	28549.757 mm^3
 	Density	0.001 g / mm^3
-	Area	12577.043 mm^2
+	Area	10595.844 mm^2
 	World X,Y,Z	0.00 mm, 0.00 mm, 0.00 mm
-	Center of Mass	0.00 mm, 81.585 mm, 10.852 mm
+	Center of Mass	0.00 mm, 63.168 mm, 10.632 mm
 	Bounding Box
 		Length	30.00 mm
-		Width	214.50 mm
+		Width	176.40 mm
 		Height	16.00 mm
 	Moment of Inertia at Center of Mass   (g mm^2)
-		Ixx	1.471E+05
-		Ixy	-6.897E-09
-		Ixz	8.152E-10
-		Iyx	-6.897E-09
-		Iyy	1574.001
-		Iyz	-3377.956
-		Izx	8.152E-10
-		Izy	-3377.956
-		Izz	1.477E+05
+		Ixx	82536.787
+		Ixy	-6.397E-09
+		Ixz	7.387E-10
+		Iyx	-6.397E-09
+		Iyy	1376.832
+		Iyz	-2615.43
+		Izx	7.387E-10
+		Izy	-2615.43
+		Izz	83038.997
 	Moment of Inertia at Origin   (g mm^2)
-		Ixx	3.915E+05
-		Ixy	-2.343E-08
-		Ixz	-1.384E-09
-		Iyx	-2.343E-08
-		Iyy	5823.096
-		Iyz	-35321.401
-		Izx	-1.384E-09
-		Izy	-35321.401
-		Izz	3.878E+05
-
+		Ixx	2.067E+05
+		Ixy	-1.971E-08
+		Ixz	-1.502E-09
+		Iyx	-1.971E-08
+		Iyy	4797.615
+		Iyz	-22939.761
+		Izx	-1.502E-09
+		Izy	-22939.761
+		Izz	2.038E+05
 
 -------------------------------------------------------
 Body 2
 
 General
 	Part Number	link2
-	Part Name	link2 v12
+	Part Name	link2 v16
 	Description
 	Material Name	ABS Plastic
 
@@ -64,36 +63,38 @@ Manage
 	Change Order
 
 Physical
-	Mass	41.613 g
-	Volume	39257.799 mm^3
+	Mass	29.988 g
+	Volume	28290.434 mm^3
 	Density	0.001 g / mm^3
-	Area	13796.102 mm^2
+	Area	10558.365 mm^2
 	World X,Y,Z	0.00 mm, 0.00 mm, 0.00 mm
-	Center of Mass	0.024 mm, 61.884 mm, 6.792 mm
+	Center of Mass	0.009 mm, 48.824 mm, 5.291 mm
 	Bounding Box
 		Length	35.821 mm
-		Width	199.435 mm
-		Height	24.00 mm
+		Width	154.435 mm
+		Height	16.00 mm
 	Moment of Inertia at Center of Mass   (g mm^2)
-		Ixx	1.573E+05
-		Ixy	-38.17
-		Ixz	2.836
-		Iyx	-38.17
-		Iyy	3161.447
-		Iyz	7189.511
-		Izx	2.836
-		Izy	7189.511
-		Izz	1.576E+05
+		Ixx	63831.477
+		Ixy	5.536
+		Ixz	0.355
+		Iyx	5.536
+		Iyy	1717.379
+		Iyz	1890.745
+		Izx	0.355
+		Izy	1890.745
+		Izz	64705.598
 	Moment of Inertia at Origin   (g mm^2)
-		Ixx	3.186E+05
-		Ixy	-101.028
-		Ixz	-4.063
-		Iyx	-101.028
-		Iyy	5081.053
-		Iyz	-10300.753
-		Izx	-4.063
-		Izy	-10300.753
-		Izz	3.169E+05
+		Ixx	1.362E+05
+		Ixy	-7.896
+		Ixz	-1.10
+		Iyx	-7.896
+		Iyy	2557.004
+		Iyz	-5856.49
+		Izx	-1.10
+		Izy	-5856.49
+		Izz	1.362E+05
+
+
 
 
 

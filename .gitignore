@@ -6,6 +6,17 @@ Icon?
 *.json
 \.obsidian
 
+*.hci
+*.cci
+PWMDevel/Debug
+.vscode
+
+*.cof
+PWMDevel/.vs
+*.fct
+*.prj~
+*.c~
+*.h~
 
 # Prerequisites
 *.d
