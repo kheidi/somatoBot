@@ -7,7 +7,7 @@ Copyright 2021 - K. Heidi Fehr & Stephanie B. Hernández
             1513 Univ. Ave. Madison WI 53706
 Revision history    Date         Name                      Reason
         -------    --------     ------                     -------------------------------
-          1.00     12/09/21     K. Fehr & S. Hernández     Development
+          1.00     12/07/21     K. Fehr & S. Hernández     Development
 
 Functions used to control the trajectory of a two link robot.
 ************************************************************************************/
@@ -37,7 +37,7 @@ Functions used to control the trajectory of a two link robot.
 struct theta Trajectory(float x0, float y0, float r, float w, float t);
 
 struct theta {
-  
+
   float theta1;
   float theta2;
   float theta1_prev;
