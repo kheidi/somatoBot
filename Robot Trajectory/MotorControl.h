@@ -11,8 +11,12 @@ Revision history    Date         Name                      Reason
 
 Functions used to control the trajectory of a two link robot.
 ************************************************************************************/
+#ifndef MOTORCONTROL_H_
+#define MOTORCONTROL_H_ 
 
-#include <mega2560.h> // change to our MCU
+
+#include <stdio.h> // not sure where it goes (main.c?)
+#include <math.h>  // not sure where it goes (main.c?)
 
 /*
 ** ===================================================================
@@ -25,16 +29,14 @@ Functions used to control the trajectory of a two link robot.
 **
 ** Parameters:
 **      NAME            - DESCRIPTION
-**      x0              - initial position in the x cooridnate of the end of link 2 
-**      y0              - initial position in the y cooridnate of the end of link 
-**      r               - radius of the circulat trajectory of link 2
+**      x0              - initial position in the x coordinate of the end of link 2 
+**      y0              - initial position in the y coordinate of the end of link 
+**      r               - radius of the circular trajectory of link 2
 **      w               - frequency to do a full rotation of the circular trajectory
 **      t               - actual time of computation
 **
 ** ===================================================================
 */
-
-struct theta Trajectory(float x0, float y0, float r, float w, float t);
 
 struct theta {
 
@@ -45,6 +47,10 @@ struct theta {
 
 };
 
+struct theta Trajectory(float x0, float y0, float r, float w, float t);
+
 
 
 	
+	
+#endif

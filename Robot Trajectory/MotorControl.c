@@ -11,6 +11,7 @@ Revision history    Date         Name                      Reason
 
 Functions used to control the trajectory of a two link robot.
 ************************************************************************************/
+
 #include "MotorControl.h"
 
 /*
@@ -33,26 +34,26 @@ Functions used to control the trajectory of a two link robot.
 ** ===================================================================
 */
 
-#include <stdio.h> // not sure where it goes (main.c?)
-#include <math.h>  // not sure where it goes (main.c?)
-#include "MotorControl.h"
 
-#define pi = 3.1514926535897
+//3.1514926535897
 
 struct theta Trajectory(float x0, float y0, float r, float w, float t)
 {
+	float x, y, l1, l2; // this variable will be time dependent
     struct theta mytheta;
+	
     //circular trajectory
-    float x, y, l1, l2; // this variable will be time dependent
-
     l1 = 153; //[mm]
     l2 = 140; //[mm]
-    x=r*cos(2*pi*w*t)+x0;
-    y=r*sin(2*pi*w*t)+y0;
+
+    x = ((r*cos(2*PI*w*t))+x0);
+    y = ((r*sin(2*PI*w*t))+y0);
+
 
     // Inverse Kinematics
-    mytheta.theta2 = acos((pow(x,2)+pow(y,2)-pow(l1,2)-pow(l2,2))/(2*l1*l2)); //wrist down
-    mytheta.theta1 = atan(y/x) - atan((l2*sin(output.theta.theta2))/(l1+l2*sin(output.theta.theta2))) ; //wrist down
+	  mytheta.theta2 = acos((pow(x,2)+pow(y,2)-pow(l1,2)-pow(l2,2))/(2*l1*l2)); //wrist down
+	  mytheta.theta1 = atan(y/x) - atan((l2*sin(mytheta.theta2))/(l1+l2*sin(mytheta.theta2))) ; //wrist down
+
     
     return mytheta; 
 
@@ -76,6 +77,7 @@ k1_1 = - kd_1/delta_t;
 k0_2 = Kp_2 + kd_2/delta_t;
 k1_2 = - kd_2/delta_t;
 
+
 */
 
 /*inside the interrupt 
@@ -84,7 +86,7 @@ if(t < t_final) //need this to get final thetas. If not here, it will run "forev
 theta = Trajectory(x0, y0, r, w, t); // variable to get thet1 & theta2
  
 
-//Add code to read ecoder position for theta1_current & theta2_current
+//Add code to read encoder position for theta1_current & theta2_current
 
 //------Command Law: Link 1------
 //Simple Law:
@@ -108,6 +110,7 @@ m2 = k0_2*e2 + k1_2*e2;
 //PWM Code to move the motors...
 
 } // end of if statement
+
 t+=delta_t;
 */
 

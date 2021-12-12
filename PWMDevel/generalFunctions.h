@@ -10,7 +10,8 @@ Revision history    Date         Name                      Reason
           1.00     12/4/2021    K. Fehr                    Development
 
 ************************************************************************************/
-
+#ifndef GENERALFUNCTIONS_H_
+#define GENERALFUNCTIONS_H_
 /*
 ** ===================================================================
 ** Method        : map
@@ -32,3 +33,5 @@ Revision history    Date         Name                      Reason
 ** ===================================================================
 */
 long map(long x, long in_min, long in_max, long out_min, long out_max);
+
+#endif

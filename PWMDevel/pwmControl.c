@@ -29,6 +29,29 @@ Data Stack size         : 512
 #define __DELAY_BACKWARD_COMPATIBLE__ //Needed for delay function/library
 
 /*
+** ------------------------------------------------------------------
+* Global Variables
+** -----------------------------------------------------------------
+*/
+//
+// --- For encoder counter:
+volatile long int motorACount;
+volatile long int motorBCount;
+
+//pin history time
+volatile int PINBhistory = 0x00;  //this could cause an error depending on start state
+
+char stateChangeTable[4][4] = //
+{
+	{ 0,-1, 1, 0},
+	{ 1, 0, 0,-1},
+	{-1, 0, 0, 1},
+	{ 0, 1,-1, 0}
+};
+
+
+
+/*
 ** ===================================================================
 ** Method        : pwm_init_timer0_A
 **
@@ -143,12 +166,12 @@ interrupt [PC_INT0] void pin_change_isr0(void)
     // Adapted from encoderCounter.ino by Alex Dawson-Elli
 
     //history and current pin terms
-    uint8_t PINBcurrent = PINB & 0b00010111; //grab only the relevant pins
-    uint8_t changedbits = PINBcurrent ^ PINBhistory;
+    int PINBcurrent = PINB & 0b00010111; //grab only the relevant pins
+    int changedbits = PINBcurrent ^ PINBhistory;
     
     //mask bits
-    uint8_t motorAMask = 0b00000011;
-    uint8_t motorBMask = 0b00010100;
+    int motorAMask = 0b00000011;
+    int motorBMask = 0b00010100;
 
 
     //read and update Crank 

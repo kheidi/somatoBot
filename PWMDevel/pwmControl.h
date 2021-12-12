@@ -21,8 +21,11 @@ Memory model            : Small
 External RAM size       : 0
 Data Stack size         : 512
 ************************************************************************************/
+#ifndef PWMCONTROL_H_
+#define PWMCONTROL_H_
 
 #include <io.h>
+#include <stdint.h>
 #include "generalFunctions.h"
 
 #define MOTOR_A 0
@@ -31,26 +34,7 @@ Data Stack size         : 512
 #define CW 1
 #define delayTime 3  //us Pick a nice delay time to ramp up motor speed
 
-/*
-** ------------------------------------------------------------------
-* Global Variables
-** -----------------------------------------------------------------
-*/
 
-// --- For encoder counter:
-volatile int motorACount = 0;
-volatile int motorBCount = 0;
-
-//pin history time 
-volatile uint8_t PINBhistory = 0x00;  //this could cause an error depending on start state
-
-char stateChangeTable[4][4] = //
-{
-    { 0,-1, 1, 0},
-    { 1, 0, 0,-1},
-    {-1, 0, 0, 1},
-    { 0, 1,-1, 0}
-};
 
 /*
 ** ------------------------------------------------------------------
@@ -103,3 +87,6 @@ void pwm_init_timer2_B();
 ** ===================================================================
 */
 void runMotor(long percentMaxPower, int motorID, int direction);
+void PCINT_Encoder_init();
+
+#endif
