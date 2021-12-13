@@ -49,11 +49,8 @@ struct theta {
 
 struct theta Trajectory(float x0, float y0, float r, float w, float t);
 
-void resetAllEncoderCounts(void);
 
-void stopMotors(void);
-
-
+float AngleToCountsConversion (float theta);
 	
 	
 #endif

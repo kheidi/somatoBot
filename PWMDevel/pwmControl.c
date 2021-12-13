@@ -35,8 +35,8 @@ Data Stack size         : 512
 */
 //
 // --- For encoder counter:
-volatile long int motorACount;
-volatile long int motorBCount;
+extern volatile long int motorACount;
+extern volatile long int motorBCount;
 
 //pin history time
 volatile int PINBhistory = 0x00;  //this could cause an error depending on start state
@@ -48,7 +48,6 @@ signed char stateChangeTable[4][4] = //
 	{-1, 0, 0, 1},
 	{ 0, 1,-1, 0}
 };
-
 
 
 /*

@@ -23,15 +23,20 @@ Data Stack size         : 512
 #include <mega328p.h>
 #include <delay.h>
 #include "PWMDevel/generalFunctions.h"
-#include "PWMDevel/pwmControl.h"
 #include "Robot Trajectory/MotorControl.h"
 #include "LCD/lcdFunctions.h"
+#include "PWMDevel/pwmControl.h"
 
 // Declare your global variables here
+
+volatile long int motorACount;
+volatile long int motorBCount;
+
+// --- For position control:
 float x0, y0, r, w, t; // for the trajectory function
-float kp_1, kp_1, kd_1, kd_2, k1_1, k1_2, k0_1, k0_2, theta1_counts, theta2_counts;  // for the control law
-int e1, m1, e2, m2; //or float? -->  for the control law
-struct theta mytheta; //get thetas from the stuct
+float kp_1, kp_2, kd_1, kd_2, k1_1, k1_2, k0_1, k0_2, theta1_counts, theta2_counts;  // for the control law
+unsigned int e1, m1, e2, m2; //or float? -->  for the control law
+struct theta mytheta; //get thetas from the struct
 
 //(x0,y0) -> initial position of the robot ---- move the robot back to position (x0, y0) always
 //r -> radios of the circle the link will move
@@ -65,10 +70,32 @@ m2 = kp_2*e2;
 //PD on Error:
 //e2 = theta2_counts - motorBCount; // our end position was calculated with IK
 //m2 = k0_2*e2 + k1_2*e2;
+if (m1<theta1_counts)
+{
+	runMotor(15, MOTOR_A, CCW);
+}
+else
+{
+	OCR0A = 0;
+	OCR0B = 0;
+	OCR0A = 0;
+	OCR0B = 0;
+}
+if(m2<theta2_counts)
+{
+	
+	runMotor(15, MOTOR_B, CW);
+} 
+else 
+{
+	OCR2A = 0;
+	OCR2B = 0;
+	OCR2A = 0;
+	OCR2B = 0;
+}
 
-//Move the motors
-runMotor(50, Motor_A, CCW);
-runMotor(50, Motor_B, CW);
+
+	
 
 }
 
@@ -147,7 +174,7 @@ pwm_init_timer2_B();
 TIMSK0=(0<<OCIE0B) | (0<<OCIE0A) | (0<<TOIE0);
 
 // Timer/Counter 1 Interrupt(s) initialization
-TIMSK1=(0<<ICIE1) | (0<<OCIE1B) | (1<<OCIE1A) | (0<<TOIE1);
+TIMSK1=(0<<ICIE1) | (0<<OCIE1B) | (0<<OCIE1A) | (0<<TOIE1);
 
 // Timer/Counter 2 Interrupt(s) initialization
 TIMSK2=(0<<OCIE2B) | (0<<OCIE2A) | (0<<TOIE2);
@@ -201,16 +228,18 @@ TWCR=(0<<TWEA) | (0<<TWSTA) | (0<<TWSTO) | (0<<TWEN) | (0<<TWIE);
 
 delay_ms(600);
 resetAllEncoderCounts();
-delay_ms(1000);
+TIMSK1=(0<<ICIE1) | (0<<OCIE1B) | (1<<OCIE1A) | (0<<TOIE1);
 
-runMotor(50,MOTOR_A,CW);
-delay_ms(5000);
-stopMotors();
-delay_ms(1000);
-runMotor(50,MOTOR_A,CCW);
-delay_ms(5000);
-stopMotors();
-delay_ms(1);
+// delay_ms(1000);
+// 
+// runMotor(50,MOTOR_A,CW);
+// delay_ms(5000);
+// stopMotors();
+// delay_ms(1000);
+// runMotor(50,MOTOR_A,CCW);
+// delay_ms(5000);
+// stopMotors();
+// delay_ms(1);
 
 // delay_ms(1000);
 // 
@@ -224,9 +253,18 @@ delay_ms(1);
 // delay_ms(1);
 
 
-// End position of the links
-r=.3;
-t=1;
+
+
+
+
+while (1)
+
+      {
+		  
+		  // End position of the links
+r = 0.3;
+t = 1;
+w = 300;
 mytheta = Trajectory(x0, y0, r, w, t); // variable to get thet1 & theta2
 
 //convert to encoder count to send to the motor
@@ -234,19 +272,14 @@ mytheta = Trajectory(x0, y0, r, w, t); // variable to get thet1 & theta2
  theta2_counts =  AngleToCountsConversion (mytheta.theta2);
  
 // Command law gains:
-kp_1 = 0;
-kp_2 = 0;
+kp_1 = 0.1;
+kp_2 = 0.1;
 kd_1 = 0;
 kd_2 = 0;
 // k0_1 = Kp_1 + kd_1/delta_t;
 // k1_1 = - kd_1/delta_t;
 // k0_2 = Kp_2 + kd_2/delta_t;
 // k1_2 = - kd_2/delta_t;
-
-
-while (1)
-
-      {
       // Place your code here
 // 		runMotor(60, MOTOR_A, CCW);
 // 		delay_us(1000000);

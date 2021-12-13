@@ -58,13 +58,9 @@ struct theta Trajectory(float x0, float y0, float r, float w, float t)
 
 }
 
-float AngleToCountsConversion (theta)
+float AngleToCountsConversion (float theta)
 {
-  //base on the steps of the rotation of the motor and the pulley to pulley traslations calculate angle
-  // 900 rev/counts 
-  //0 count/rev = 0 deg
-  // 900 sounts/rev = 360 deg
-  // 450  counr/rev = 180 deg
+
 
   float percentage, theta_counts;
   percentage = theta/360;

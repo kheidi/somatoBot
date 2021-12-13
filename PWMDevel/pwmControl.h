@@ -35,7 +35,6 @@ Data Stack size         : 512
 #define delayTime 3  //us Pick a nice delay time to ramp up motor speed
 
 
-
 /*
 ** ------------------------------------------------------------------
 * STRUCTS
@@ -88,5 +87,7 @@ void pwm_init_timer2_B();
 */
 void runMotor(long percentMaxPower, int motorID, int direction);
 void PCINT_Encoder_init();
+void resetAllEncoderCounts(void);
+void stopMotors(void);
 
 #endif
