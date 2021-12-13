@@ -201,6 +201,11 @@ interrupt [PC_INT0] void pin_change_isr0(void)
 
 }
 
+void resetAllEncoderCounts(void){
+	motorACount = 0;
+	motorBCount = 0;
+}
+
 /*
 ** ===================================================================
 ** Method        : runMotor
@@ -268,6 +273,22 @@ void runMotor(long percentMaxPower, int motorID, int direction)
             }
         }
     }
+    
+}
+
+void stopMotors(void)
+{
+
+	OCR0A = 0;
+	OCR0B = 0;
+	OCR0A = 0;
+	OCR0B = 0;
+	OCR2A = 0;
+	OCR2B = 0;
+	OCR2A = 0;
+	OCR2B = 0;
+	delay_us(delayTime);
+      
     
 }
 

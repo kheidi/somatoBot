@@ -165,6 +165,30 @@ TWCR=(0<<TWEA) | (0<<TWSTA) | (0<<TWSTO) | (0<<TWEN) | (0<<TWIE);
 // Globally enable interrupts
 #asm("sei")
 
+delay_ms(600);
+resetAllEncoderCounts();
+delay_ms(1000);
+
+runMotor(50,MOTOR_A,CW);
+delay_ms(5000);
+stopMotors();
+delay_ms(1000);
+runMotor(50,MOTOR_A,CCW);
+delay_ms(5000);
+stopMotors();
+delay_ms(1);
+
+// delay_ms(1000);
+// 
+// runMotor(50,MOTOR_B,CW);
+// delay_ms(5000);
+// stopMotors();
+// delay_ms(1000);
+// runMotor(50,MOTOR_B,CCW);
+// delay_ms(5000);
+// stopMotors();
+// delay_ms(1);
+
 while (1)
 
       {
@@ -190,7 +214,7 @@ while (1)
 // 		runMotor(100, MOTOR_B, CW);
 // 		delay_us(1000000);
 // 		runMotor(0,MOTOR_A,CW);
-// 		runMotor(0,MOTOR_B,CW);
+ 		
 
 
       }
