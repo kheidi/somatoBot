@@ -62,11 +62,11 @@ float AngleToCountsConversion (float theta)
 {
 
 
-  float percentage, theta_counts;
-  percentage = theta/360;
-  theta_counts = percentage*900;
-
-return theta_counts;
+	 float percentage, theta_counts;
+	 percentage = theta/360;
+	 theta_counts = percentage*900;
+	
+	return theta_counts;
 }
 
 
