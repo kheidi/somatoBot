@@ -21,6 +21,7 @@ Data Stack size         : 512
 *******************************************************/
 
 #include <mega328p.h>
+#include <delay.h>
 #include "PWMDevel/generalFunctions.h"
 #include "PWMDevel/pwmControl.h"
 #include "Robot Trajectory/MotorControl.h"
@@ -51,8 +52,8 @@ CLKPR=(0<<CLKPCE) | (0<<CLKPS3) | (0<<CLKPS2) | (0<<CLKPS1) | (0<<CLKPS0);
 
 // Input/Output Ports initialization
 // Port B initialization
-// Function: Bit7=In Bit6=In Bit5=In Bit4=In Bit3=In Bit2=In Bit1=In Bit0=In 
-DDRB=(0<<DDB7) | (0<<DDB6) | (0<<DDB5) | (0<<DDB4) | (0<<DDB3) | (0<<DDB2) | (0<<DDB1) | (0<<DDB0);
+// Function: Bit7=In Bit6=In Bit5=In Bit4=In Bit3=Out Bit2=In Bit1=In Bit0=In 
+DDRB=(0<<DDB7) | (0<<DDB6) | (0<<DDB5) | (0<<DDB4) | (1<<DDB3) | (0<<DDB2) | (0<<DDB1) | (0<<DDB0);
 // State: Bit7=T Bit6=T Bit5=T Bit4=T Bit3=T Bit2=T Bit1=T Bit0=T 
 PORTB=(0<<PORTB7) | (0<<PORTB6) | (0<<PORTB5) | (0<<PORTB4) | (0<<PORTB3) | (0<<PORTB2) | (0<<PORTB1) | (0<<PORTB0);
 
@@ -64,7 +65,7 @@ PORTC=(0<<PORTC6) | (0<<PORTC5) | (0<<PORTC4) | (0<<PORTC3) | (0<<PORTC2) | (0<<
 
 // Port D initialization
 // Function: Bit7=In Bit6=In Bit5=In Bit4=In Bit3=In Bit2=In Bit1=In Bit0=In 
-DDRD=(0<<DDD7) | (0<<DDD6) | (0<<DDD5) | (0<<DDD4) | (0<<DDD3) | (0<<DDD2) | (0<<DDD1) | (0<<DDD0);
+DDRD=(0<<DDD7) | (1<<DDD6) | (1<<DDD5) | (0<<DDD4) | (1<<DDD3) | (0<<DDD2) | (0<<DDD1) | (0<<DDD0);
 // State: Bit7=T Bit6=T Bit5=T Bit4=T Bit3=T Bit2=T Bit1=T Bit0=T 
 PORTD=(0<<PORTD7) | (0<<PORTD6) | (0<<PORTD5) | (0<<PORTD4) | (0<<PORTD3) | (0<<PORTD2) | (0<<PORTD1) | (0<<PORTD0);
 
@@ -168,7 +169,29 @@ while (1)
 
       {
       // Place your code here
-	  runMotor(100, MOTOR_A, CW);
+// 		runMotor(60, MOTOR_A, CCW);
+// 		delay_us(1000000);
+// 		runMotor(60, MOTOR_B, CW);
+// 		delay_us(1000000);
+// 		runMotor(70, MOTOR_A, CCW);
+// 		delay_us(1000000);
+// 		runMotor(70, MOTOR_B, CW);
+// 		delay_us(1000000);
+// 		runMotor(80, MOTOR_A, CCW);
+// 		delay_us(1000000);
+// 		runMotor(80, MOTOR_B, CW);
+// 		delay_us(1000000);
+// 		runMotor(90, MOTOR_A, CCW);
+// 		delay_us(1000000);
+// 		runMotor(90, MOTOR_B, CW);
+// 		delay_us(1000000);
+// 		runMotor(100, MOTOR_A, CCW);
+// 		delay_us(1000000);
+// 		runMotor(100, MOTOR_B, CW);
+// 		delay_us(1000000);
+// 		runMotor(0,MOTOR_A,CW);
+// 		runMotor(0,MOTOR_B,CW);
+
 
       }
 }

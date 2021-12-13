@@ -41,7 +41,7 @@ volatile long int motorBCount;
 //pin history time
 volatile int PINBhistory = 0x00;  //this could cause an error depending on start state
 
-char stateChangeTable[4][4] = //
+signed char stateChangeTable[4][4] = //
 {
 	{ 0,-1, 1, 0},
 	{ 1, 0, 0,-1},
@@ -151,8 +151,8 @@ void PCINT_Encoder_init()
     PCIFR=(0<<PCIF2) | (0<<PCIF1) | (1<<PCIF0);
 }
 
-// Pin change 0-7 interrupt service routine
 
+// Pin change 8-14 interrupt service routine
 interrupt [PC_INT0] void pin_change_isr0(void)
 {
     // Only the following PCINTs are enabled
@@ -165,15 +165,19 @@ interrupt [PC_INT0] void pin_change_isr0(void)
 
     // Adapted from encoderCounter.ino by Alex Dawson-Elli
 
+	unsigned char changeIA = 0;
+	unsigned char changeIB = 0;
+	unsigned char changeJA = 0;
+	unsigned char changeJB = 0;
+
     //history and current pin terms
-    int PINBcurrent = PINB & 0b00010111; //grab only the relevant pins
-    int changedbits = PINBcurrent ^ PINBhistory;
+    unsigned char PINBcurrent = PINB & 0b00010111; //grab only the relevant pins
+    unsigned char changedbits = PINBcurrent ^ PINBhistory;
     
     //mask bits
-    int motorAMask = 0b00000011;
-    int motorBMask = 0b00010100;
-
-
+    char motorAMask = 0b00000011;
+    char motorBMask = 0b00010100;
+	
     //read and update Crank 
      if(changedbits & motorAMask) //something has changed in Crank's state
     {
@@ -184,7 +188,12 @@ interrupt [PC_INT0] void pin_change_isr0(void)
     if(changedbits & motorBMask) //something has changed in RightPedal's state
     {
         //! Need to fix this so that the bit shifting works with the blank space... somehow?
-        motorBCount += stateChangeTable[((PINBhistory & motorBMask) >> 2)][((PINBcurrent & motorBMask) >> 2)];  
+		changeIA = ((PINBhistory & motorBMask) & 0b00000100) >> 2;
+		changeIB = ((PINBhistory & motorBMask) & 0b00010000) >> 3;
+		changeJA = ((PINBcurrent & motorBMask) & 0b00000100) >> 2;
+		changeJB = ((PINBcurrent & motorBMask) & 0b00010000) >> 3;
+		
+        motorBCount += stateChangeTable[(changeIA | changeIB)][(changeJA | changeJB)];  
     }
 
     PINBhistory = PINBcurrent;   
@@ -213,7 +222,7 @@ void runMotor(long percentMaxPower, int motorID, int direction)
 {
     int sendToMotor;
     int speed;
-    sendToMotor = (int)map(percentMaxPower,0,100,0,255); //Converts the percent power to a value from 0 255 for the 8-bit timers
+    sendToMotor = (int)map(percentMaxPower,0,100,140,255); //Converts the percent power to a value from 0 255 for the 8-bit timers
 
     // ------- MOVE MOTOR A
     if (motorID == 0) // 
