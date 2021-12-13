@@ -25,6 +25,7 @@ Data Stack size         : 512
 #include "PWMDevel/generalFunctions.h"
 #include "PWMDevel/pwmControl.h"
 #include "Robot Trajectory/MotorControl.h"
+#include "LCD/lcdFunctions.h"
 
 // Declare your global variables here
 float x0, y0, r, w, t; // for the trajectory function
