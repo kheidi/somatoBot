@@ -1,7 +1,7 @@
 /*******************************************************
 This program was created by the CodeWizardAVR V3.38 UL 
 Automatic Program Generator
-© Copyright 1998-2019 Pavel Haiduc, HP InfoTech s.r.l.
+ï¿½ Copyright 1998-2019 Pavel Haiduc, HP InfoTech s.r.l.
 http://www.hpinfotech.com
 
 Project : 
@@ -27,6 +27,15 @@ Data Stack size         : 512
 #include "Robot Trajectory/MotorControl.h"
 
 // Declare your global variables here
+float x0, y0, r, w, t; // for the trajectory function
+float kp_1, kp_1, kd_1, kd_2, k1_1, k1_2, k0_1, k0_2, theta1_counts, theta2_counts;  // for the control law
+int e1, m1, e2, m2; //or float? -->  for the control law
+struct theta mytheta; //get thetas from the stuct
+
+//(x0,y0) -> initial position of the robot ---- move the robot back to position (x0, y0) always
+//r -> radios of the circle the link will move
+//w -> how fast I want to make a full circle (Hz)
+
 
 // Standard Input/Output functions
 #include <stdio.h>
@@ -34,7 +43,31 @@ Data Stack size         : 512
 // Timer1 output compare A interrupt service routine
 interrupt [TIM1_COMPA] void timer1_compa_isr(void)
 {
-// Place your code here
+// Motor Control
+
+ //------Command Law: Link 1------
+//Simple Law:
+e1 = theta1_counts - motorACount; // our end position was calculated with IK
+m1 = kp_1*e1;
+
+//PD on Error:
+//e1 = theta1_counts - motorACount; // our end position was calculated with IK
+//m1 = k0_1*e1 + k1_1*e1;
+
+
+//------Command Law: Link 2------
+
+//Simple Law:
+e2 = theta2_counts - motorBCount; // our end position was calculated with IK
+m2 = kp_2*e2;
+
+//PD on Error:
+//e2 = theta2_counts - motorBCount; // our end position was calculated with IK
+//m2 = k0_2*e2 + k1_2*e2;
+
+//Move the motors
+runMotor(50, Motor_A, CCW);
+runMotor(50, Motor_B, CW);
 
 }
 
@@ -188,6 +221,27 @@ delay_ms(1);
 // delay_ms(5000);
 // stopMotors();
 // delay_ms(1);
+
+
+// End position of the links
+r=.3;
+t=1;
+mytheta = Trajectory(x0, y0, r, w, t); // variable to get thet1 & theta2
+
+//convert to encoder count to send to the motor
+ theta1_counts =  AngleToCountsConversion (mytheta.theta1);
+ theta2_counts =  AngleToCountsConversion (mytheta.theta2);
+ 
+// Command law gains:
+kp_1 = 0;
+kp_2 = 0;
+kd_1 = 0;
+kd_2 = 0;
+// k0_1 = Kp_1 + kd_1/delta_t;
+// k1_1 = - kd_1/delta_t;
+// k0_2 = Kp_2 + kd_2/delta_t;
+// k1_2 = - kd_2/delta_t;
+
 
 while (1)
 

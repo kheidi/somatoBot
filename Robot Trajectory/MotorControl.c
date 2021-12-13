@@ -35,7 +35,6 @@ Functions used to control the trajectory of a two link robot.
 */
 
 
-//3.1514926535897
 
 struct theta Trajectory(float x0, float y0, float r, float w, float t)
 {
@@ -59,58 +58,77 @@ struct theta Trajectory(float x0, float y0, float r, float w, float t)
 
 }
 
+float AngleToCountsConversion (theta)
+{
+  //base on the steps of the rotation of the motor and the pulley to pulley traslations calculate angle
+  // 900 rev/counts 
+  //0 count/rev = 0 deg
+  // 900 sounts/rev = 360 deg
+  // 450  counr/rev = 180 deg
+
+  float percentage, theta_counts;
+  percentage = theta/360;
+  theta_counts = percentage*900;
+
+return theta_counts;
+}
+
+
 /* inside main
-float x0, y0, r, w, t, delta_t, theta1_current, theta2_current, kp_1, kp_1, kd_1, kd_2, k1_1, k1_2, k0_1, 0_2; 
-int e1, m1, r1, e2, m2, r2, t_final; //or float?
-//(x0,y0) -> initial position of the robot ---- Not sure if this should be updated or move the robot back to position (x0, y0) always...
+float x0, y0, r, w, t; // for the trajectory function
+float kp_1, kp_1, kd_1, kd_2, k1_1, k1_2, k0_1, 0_2, theta1_counts, theta2_counts;  // for the control law
+int e1, m1, e2, m2; //or float? -->  for the control law
+struct theta mytheta; //get thetas from the stuct
+
+//(x0,y0) -> initial position of the robot ---- move the robot back to position (x0, y0) always
 //r -> radios of the circle the link will move
 //w -> how fast I want to make a full circle (Hz)
-//theta#_current -> read angle of the link from the encoder
 
-t=0; // calculate time based on the frequency
-delta_t= 1/interrupt freq; //
-t_final = 1; // duration of movement,
+r=0.3
 
-Struct theta;
-k0_1 = Kp_1 + kd_1/delta_t;
-k1_1 = - kd_1/delta_t;
-k0_2 = Kp_2 + kd_2/delta_t;
-k1_2 = - kd_2/delta_t;
+// Command law gains:
+kp_1 = 0;
+kp_2 = 0;
+kd_1 = 0;
+kd_2 = 0;
+// k0_1 = Kp_1 + kd_1/delta_t;
+// k1_1 = - kd_1/delta_t;
+// k0_2 = Kp_2 + kd_2/delta_t;
+// k1_2 = - kd_2/delta_t;
 
+mytheta = Trajectory(x0, y0, r, w, t); // variable to get thet1 & theta2
 
-*/
+//convert to encoder count to send to the motor
+ theta1_counts =  AngleToCountsConversion (mytheta.theta1);
+ theta2_counts =  AngleToCountsConversion (mytheta.theta2);
+ 
+ */
 
 /*inside the interrupt 
-if(t < t_final) //need this to get final thetas. If not here, it will run "forever"
-{ 
-theta = Trajectory(x0, y0, r, w, t); // variable to get thet1 & theta2
- 
-
-//Add code to read encoder position for theta1_current & theta2_current
 
 //------Command Law: Link 1------
 //Simple Law:
-e1 = theta.theta1 - theta1_current; //theta1 from the IK function
+e1 = theta1_counts - motorACount; // our end position was calculated with IK
 m1 = kp_1*e1;
+
 //PD on Error:
-e1 = theta.theta1 - theta1_current; //theta1 from the IK function
-m1 = k0_1*e1 + k1_1*e1;
+//e1 = theta1_counts - motorACount; // our end position was calculated with IK
+//m1 = k0_1*e1 + k1_1*e1;
 
 
 //------Command Law: Link 2------
 
 //Simple Law:
-e2 = theta.theta2 - theta2_current; //theta2 from the IK function
+e2 = theta2_counts - motorBCount; // our end position was calculated with IK
 m2 = kp_2*e2;
 
 //PD on Error:
-e2 = theta.theta2 - theta2_current; //theta2 from the IK function
-m2 = k0_2*e2 + k1_2*e2;
+//e2 = theta2_counts - motorBCount; // our end position was calculated with IK
+//m2 = k0_2*e2 + k1_2*e2;
 
-//PWM Code to move the motors...
+//Move the motors
+runMotor(50, Motor_A, CCW);
+runMotor(50, Motor_B, CW);
 
-} // end of if statement
-
-t+=delta_t;
 */
 
