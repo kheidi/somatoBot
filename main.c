@@ -49,28 +49,8 @@ struct theta mytheta; //get thetas from the struct
 // Timer1 output compare A interrupt service routine
 interrupt [TIM1_COMPA] void timer1_compa_isr(void)
 {
-// Motor Control
 
- //------Command Law: Link 1------
-//Simple Law:
-e1 = theta1_counts - motorACount; // our end position was calculated with IK
-m1 = kp_1*e1;
-
-//PD on Error:
-//e1 = theta1_counts - motorACount; // our end position was calculated with IK
-//m1 = k0_1*e1 + k1_1*e1;
-
-
-//------Command Law: Link 2------
-
-//Simple Law:
-e2 = theta2_counts - motorBCount; // our end position was calculated with IK
-m2 = kp_2*e2;
-
-//PD on Error:
-//e2 = theta2_counts - motorBCount; // our end position was calculated with IK
-//m2 = k0_2*e2 + k1_2*e2;
-if (m1<theta1_counts)
+if (motorACount<theta1_counts)
 {
 	runMotor(15, MOTOR_A, CCW);
 }
@@ -81,7 +61,7 @@ else
 	OCR0A = 0;
 	OCR0B = 0;
 }
-if(m2<theta2_counts)
+if(motorBCount<theta2_counts)
 {
 	
 	runMotor(15, MOTOR_B, CW);
@@ -93,8 +73,6 @@ else
 	OCR2A = 0;
 	OCR2B = 0;
 }
-
-
 	
 
 }
@@ -161,6 +139,8 @@ OCR1AH=0x7D;
 OCR1AL=0x00;
 OCR1BH=0x00;
 OCR1BL=0x00;
+
+// -------- I want to change to a lower frequency
 
 // Timer/Counter 2 initialization
 // Clock source: System Clock
@@ -260,48 +240,73 @@ TIMSK1=(0<<ICIE1) | (0<<OCIE1B) | (1<<OCIE1A) | (0<<TOIE1);
 while (1)
 
       {
-		  
-		  // End position of the links
-r = 0.3;
-t = 1;
-w = 300;
-mytheta = Trajectory(x0, y0, r, w, t); // variable to get thet1 & theta2
+					
+			// Link Trajectory calculation
+			r = 0.3;
+			t = 1;
+			w = 50; //0.02s
+			mytheta = Trajectory(x0, y0, r, w, t); // variable to get thet1 & theta2
 
-//convert to encoder count to send to the motor
- theta1_counts =  AngleToCountsConversion (mytheta.theta1);
- theta2_counts =  AngleToCountsConversion (mytheta.theta2);
+			//convert to encoder count to send to the motor
+			theta1_counts =  AngleToCountsConversion (mytheta.theta1);
+			theta2_counts =  AngleToCountsConversion (mytheta.theta2);
  
-// Command law gains:
-kp_1 = 0.1;
-kp_2 = 0.1;
-kd_1 = 0;
-kd_2 = 0;
-// k0_1 = Kp_1 + kd_1/delta_t;
-// k1_1 = - kd_1/delta_t;
-// k0_2 = Kp_2 + kd_2/delta_t;
-// k1_2 = - kd_2/delta_t;
-      // Place your code here
-// 		runMotor(60, MOTOR_A, CCW);
-// 		delay_us(1000000);
-// 		runMotor(60, MOTOR_B, CW);
-// 		delay_us(1000000);
-// 		runMotor(70, MOTOR_A, CCW);
-// 		delay_us(1000000);
-// 		runMotor(70, MOTOR_B, CW);
-// 		delay_us(1000000);
-// 		runMotor(80, MOTOR_A, CCW);
-// 		delay_us(1000000);
-// 		runMotor(80, MOTOR_B, CW);
-// 		delay_us(1000000);
-// 		runMotor(90, MOTOR_A, CCW);
-// 		delay_us(1000000);
-// 		runMotor(90, MOTOR_B, CW);
-// 		delay_us(1000000);
-// 		runMotor(100, MOTOR_A, CCW);
-// 		delay_us(1000000);
-// 		runMotor(100, MOTOR_B, CW);
-// 		delay_us(1000000);
-// 		runMotor(0,MOTOR_A,CW);
+			// Command law gains:
+			kp_1 = 0.1;
+			kp_2 = 0.1;
+			kd_1 = 0;
+			kd_2 = 0;
+
+			// k0_1 = Kp_1 + kd_1/delta_t;
+			// k1_1 = - kd_1/delta_t;
+			// k0_2 = Kp_2 + kd_2/delta_t;
+			// k1_2 = - kd_2/delta_t;
+		  
+		  // Motor Control Laws: 
+
+			//------Command Law: Link 1------
+			//Simple Law:
+			// e1 = theta1_counts - motorACount; // our end position was calculated with IK
+			// m1 = kp_1*e1;
+
+			//PD on Error:
+			//e1 = theta1_counts - motorACount; // our end position was calculated with IK
+			//m1 = k0_1*e1 + k1_1*e1;
+
+
+			//------Command Law: Link 2------
+
+			//Simple Law:
+			// e2 = theta2_counts - motorBCount; // our end position was calculated with IK
+			// m2 = kp_2*e2;
+
+			//PD on Error:
+			//e2 = theta2_counts - motorBCount; // our end position was calculated with IK
+			//m2 = k0_2*e2 + k1_2*e2;
+
+
+			// Place your code here
+		// 		runMotor(60, MOTOR_A, CCW);
+		// 		delay_us(1000000);
+		// 		runMotor(60, MOTOR_B, CW);
+		// 		delay_us(1000000);
+		// 		runMotor(70, MOTOR_A, CCW);
+		// 		delay_us(1000000);
+		// 		runMotor(70, MOTOR_B, CW);
+		// 		delay_us(1000000);
+		// 		runMotor(80, MOTOR_A, CCW);
+		// 		delay_us(1000000);
+		// 		runMotor(80, MOTOR_B, CW);
+		// 		delay_us(1000000);
+		// 		runMotor(90, MOTOR_A, CCW);
+		// 		delay_us(1000000);
+		// 		runMotor(90, MOTOR_B, CW);
+		// 		delay_us(1000000);
+		// 		runMotor(100, MOTOR_A, CCW);
+		// 		delay_us(1000000);
+		// 		runMotor(100, MOTOR_B, CW);
+		// 		delay_us(1000000);
+		// 		runMotor(0,MOTOR_A,CW);
  		
 
 
