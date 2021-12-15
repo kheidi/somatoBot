@@ -72,7 +72,7 @@ m2 = kp_2*e2;
 //m2 = k0_2*e2 + k1_2*e2;
 if (m1<theta1_counts)
 {
-	runMotor(15, MOTOR_A, CCW);
+	//runMotor(15, MOTOR_A, CCW);
 }
 else
 {
@@ -84,7 +84,7 @@ else
 if(m2<theta2_counts)
 {
 	
-	runMotor(15, MOTOR_B, CW);
+	//runMotor(15, MOTOR_B, CW);
 } 
 else 
 {
@@ -224,7 +224,6 @@ SPCR=(0<<SPIE) | (0<<SPE) | (0<<DORD) | (0<<MSTR) | (0<<CPOL) | (0<<CPHA) | (0<<
 TWCR=(0<<TWEA) | (0<<TWSTA) | (0<<TWSTO) | (0<<TWEN) | (0<<TWIE);
 
 // Globally enable interrupts
-#asm("sei")
 
 delay_ms(600);
 resetAllEncoderCounts();
@@ -254,7 +253,25 @@ TIMSK1=(0<<ICIE1) | (0<<OCIE1B) | (1<<OCIE1A) | (0<<TOIE1);
 
 
 
-
+ stopMotors();
+ putchar(0xFE);
+ putchar(0x58); //Clear
+ delay_ms(20);
+ 
+ //putchar(0xFE);
+ putchar('H'); // H
+ putchar(0x73); //S
+ delay_ms(20);
+ //delay_ms(1000);
+ 
+ putchar(0xFE);
+ putchar(0x58); //Clear
+ delay_ms(20);
+ 
+ putchar(0xFE);
+ putchar('S'); //S
+ 
+#asm("sei")
 
 
 while (1)
@@ -270,6 +287,7 @@ mytheta = Trajectory(x0, y0, r, w, t); // variable to get thet1 & theta2
 //convert to encoder count to send to the motor
  theta1_counts =  AngleToCountsConversion (mytheta.theta1);
  theta2_counts =  AngleToCountsConversion (mytheta.theta2);
+
  
 // Command law gains:
 kp_1 = 0.1;
@@ -302,6 +320,7 @@ kd_2 = 0;
 // 		runMotor(100, MOTOR_B, CW);
 // 		delay_us(1000000);
 // 		runMotor(0,MOTOR_A,CW);
+
  		
 
 

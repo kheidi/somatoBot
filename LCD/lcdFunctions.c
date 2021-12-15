@@ -22,6 +22,8 @@
 
 #include "lcdFunctions.h"
 
+/*
+
 // USART Transmitter buffer
 char tx_buffer0[TX_BUFFER_SIZE0];
 
@@ -70,3 +72,5 @@ void putchar(char c)
 	#asm("sei")
 }
 #pragma used-
+
+*/
