@@ -204,7 +204,6 @@ SPCR=(0<<SPIE) | (0<<SPE) | (0<<DORD) | (0<<MSTR) | (0<<CPOL) | (0<<CPHA) | (0<<
 TWCR=(0<<TWEA) | (0<<TWSTA) | (0<<TWSTO) | (0<<TWEN) | (0<<TWIE);
 
 // Globally enable interrupts
-#asm("sei")
 
 delay_ms(600);
 resetAllEncoderCounts();
@@ -234,7 +233,25 @@ TIMSK1=(0<<ICIE1) | (0<<OCIE1B) | (1<<OCIE1A) | (0<<TOIE1);
 
 
 
-
+ stopMotors();
+ putchar(0xFE);
+ putchar(0x58); //Clear
+ delay_ms(20);
+ 
+ //putchar(0xFE);
+ putchar('H'); // H
+ putchar(0x73); //S
+ delay_ms(20);
+ //delay_ms(1000);
+ 
+ putchar(0xFE);
+ putchar(0x58); //Clear
+ delay_ms(20);
+ 
+ putchar(0xFE);
+ putchar('S'); //S
+ 
+#asm("sei")
 
 
 while (1)
