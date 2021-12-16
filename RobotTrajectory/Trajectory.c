@@ -70,11 +70,10 @@ struct theta Trajectory(float x0, float y0, float r, float w, float t)
 	mytheta.theta1 = abs(mytheta.theta1);
     // Inverse Kinematics
 // 	  mytheta.theta2 = acos((pow(x,2)+pow(y,2)-pow(l1,2)-pow(l2,2))/(2*l1*l2)); //wrist down
-// 	  mytheta.theta1 = atan(y/x) - atan((l2*sin(mytheta.theta2))/(l1+l2*sin(mytheta.theta2))) ; //wrist down
+// 	  mytheta.theta1 = atan(y/x) - atan((l2*sin(mytheta.theta2))/(l1+l2*cos(mytheta.theta2))) ; //wrist down
 
     
     return mytheta; 
-	i =0;
 
 }
 
