@@ -160,7 +160,7 @@ void E_Stop (void)
   mytheta.theta1 = 0;
   theta1_counts = 0;
   theta2_counts = 0;
-
+  resetAllEncoderCounts();
 }
 
 

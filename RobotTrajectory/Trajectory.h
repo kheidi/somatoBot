@@ -17,6 +17,7 @@ Functions used to control the trajectory of a two link robot.
 
 #include <stdio.h> 
 #include <math.h>  
+#include "PWMDevel/pwmControl.h" // for encoder reset fucntion
 
 /*
 ** ===================================================================
