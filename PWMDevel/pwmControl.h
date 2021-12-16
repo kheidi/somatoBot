@@ -30,8 +30,8 @@ Data Stack size         : 512
 
 #define MOTOR_A 0
 #define MOTOR_B 1
-#define CCW 0
-#define CW 1
+#define CCW 1
+#define CW 0
 #define delayTime 3  //us Pick a nice delay time to ramp up motor speed
 
 
