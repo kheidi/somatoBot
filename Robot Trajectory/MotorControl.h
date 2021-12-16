@@ -17,6 +17,7 @@ Functions used to control the trajectory of a two link robot.
 
 #include <stdio.h> // not sure where it goes (main.c?)
 #include <math.h>  // not sure where it goes (main.c?)
+#include <stdlib.h>
 
 /*
 ** ===================================================================

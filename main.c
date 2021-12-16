@@ -50,29 +50,30 @@ struct theta mytheta; //get thetas from the struct
 interrupt [TIM1_COMPA] void timer1_compa_isr(void)
 {
 
-if (motorACount<theta1_counts)
-{
-	runMotor(15, MOTOR_A, CCW);
-}
-else
-{
-	OCR0A = 0;
-	OCR0B = 0;
-	OCR0A = 0;
-	OCR0B = 0;
-}
-if(motorBCount<theta2_counts)
-{
+	if (abs(motorACount)<theta1_counts)
+	{
+		runMotor(20, MOTOR_A, CCW);
+	}
+	else
+	{
+		OCR0A = 0;
+		OCR0B = 0;
+		OCR0A = 0;
+		OCR0B = 0;
+	}
+	if(motorBCount<theta2_counts)
+	{
 	
-	runMotor(15, MOTOR_B, CW);
-} 
-else 
-{
-	OCR2A = 0;
-	OCR2B = 0;
-	OCR2A = 0;
-	OCR2B = 0;
-}
+		runMotor(20, MOTOR_B, CW);
+		//stopMotors();
+	} 
+	else 
+	{
+		OCR2A = 0;
+		OCR2B = 0;
+		OCR2A = 0;
+		OCR2B = 0;
+	}
 	
 
 }
@@ -206,13 +207,14 @@ TWCR=(0<<TWEA) | (0<<TWSTA) | (0<<TWSTO) | (0<<TWEN) | (0<<TWIE);
 // Globally enable interrupts
 
 delay_ms(600);
+stopMotors();
 resetAllEncoderCounts();
 TIMSK1=(0<<ICIE1) | (0<<OCIE1B) | (1<<OCIE1A) | (0<<TOIE1);
 
 // delay_ms(1000);
 // 
-// runMotor(50,MOTOR_A,CW);
-// delay_ms(5000);
+//runMotor(50,MOTOR_B,CW);
+//delay_ms(5000);
 // stopMotors();
 // delay_ms(1000);
 // runMotor(50,MOTOR_A,CCW);
@@ -233,41 +235,42 @@ TIMSK1=(0<<ICIE1) | (0<<OCIE1B) | (1<<OCIE1A) | (0<<TOIE1);
 
 
 
- stopMotors();
- putchar(0xFE);
- putchar(0x58); //Clear
- delay_ms(20);
- 
- //putchar(0xFE);
- putchar('H'); // H
- putchar(0x73); //S
- delay_ms(20);
- //delay_ms(1000);
- 
- putchar(0xFE);
- putchar(0x58); //Clear
- delay_ms(20);
- 
- putchar(0xFE);
- putchar('S'); //S
+//  stopMotors();
+//  putchar(0xFE);
+//  putchar(0x58); //Clear
+//  delay_ms(20);
+//  
+//  //putchar(0xFE);
+//  putchar('H'); // H
+//  putchar(0x73); //S
+//  delay_ms(20);
+//  //delay_ms(1000);
+//  
+//  putchar(0xFE);
+//  putchar(0x58); //Clear
+//  delay_ms(20);
+//  
+//  putchar(0xFE);
+//  putchar('S'); //S
  
 #asm("sei")
 
-
-while (1)
-
-      {
-					
 			// Link Trajectory calculation
-			r = 0.3;
+			r = 0.03;
 			t = 1;
 			w = 50; //0.02s
+			x0=.03;
+			y0=.02;
 			mytheta = Trajectory(x0, y0, r, w, t); // variable to get thet1 & theta2
 
 			//convert to encoder count to send to the motor
 			theta1_counts =  AngleToCountsConversion (mytheta.theta1);
 			theta2_counts =  AngleToCountsConversion (mytheta.theta2);
  
+while (1)
+
+      {
+					
 			// Command law gains:
 			kp_1 = 0.1;
 			kp_2 = 0.1;
@@ -303,12 +306,12 @@ while (1)
 
 
 			// Place your code here
-		// 		runMotor(60, MOTOR_A, CCW);
-		// 		delay_us(1000000);
-		// 		runMotor(60, MOTOR_B, CW);
-		// 		delay_us(1000000);
-		// 		runMotor(70, MOTOR_A, CCW);
-		// 		delay_us(1000000);
+// 				runMotor(60, MOTOR_A, CCW);
+// 		 		delay_us(1000000);
+// 				runMotor(60, MOTOR_B, CW);
+// 				delay_us(1000000);
+// 				runMotor(70, MOTOR_A, CCW);
+//		 		delay_us(1000000);
 		// 		runMotor(70, MOTOR_B, CW);
 		// 		delay_us(1000000);
 		// 		runMotor(80, MOTOR_A, CCW);
