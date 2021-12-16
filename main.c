@@ -60,6 +60,7 @@ interrupt [TIM1_COMPA] void timer1_compa_isr(void)
 		OCR0B = 0;
 		OCR0A = 0;
 		OCR0B = 0;
+
 	}
 	if(motorBCount<theta2_counts)
 	{
@@ -209,6 +210,10 @@ TWCR=(0<<TWEA) | (0<<TWSTA) | (0<<TWSTO) | (0<<TWEN) | (0<<TWIE);
 delay_ms(600);
 stopMotors();
 resetAllEncoderCounts();
+setLCDbrightness(255);
+setLCDColor(PINK);
+printStringLCD("My message");
+
 TIMSK1=(0<<ICIE1) | (0<<OCIE1B) | (1<<OCIE1A) | (0<<TOIE1);
 
 // delay_ms(1000);

@@ -21,11 +21,13 @@ Data Stack size         : 512
 *******************************************************/
 
 #include <mega328p.h>
-#include <stdio.h>
-#include <delay.h>
-#include "lcdFunctions.h"
+#include "../PWMDevel/pwmControl.h"
+#include "../LCD/lcdFunctions.h"
+#include "../PWMDevel/generalFunctions.h"
 
 // Declare your global variables here
+volatile long int motorACount;
+volatile long int motorBCount;
 
 // Standard Input/Output functions
 #include <stdio.h>
@@ -33,6 +35,7 @@ Data Stack size         : 512
 void main(void)
 {
 // Declare your local variables here
+int i;
 
 // Crystal Oscillator division factor: 1
 #pragma optsize-
@@ -164,21 +167,22 @@ SPCR=(0<<SPIE) | (0<<SPE) | (0<<DORD) | (0<<MSTR) | (0<<CPOL) | (0<<CPHA) | (0<<
 // TWI disabled
 TWCR=(0<<TWEA) | (0<<TWSTA) | (0<<TWSTO) | (0<<TWEN) | (0<<TWIE);
 
-putchar(0xFE);
-putchar(0x58);
-delay_ms(10);
+clearLCD();
 
-putchar(0xFE);
-putchar('H');
-delay_ms(10);
+printStringLCD("Rainbow Cycle!");
+for( i = 0; i < 8; i++ ){
+      displayColor(i);
+	  delay_ms(500);
+	  if (i == 7)
+	  {
+		  i=0;
+	  }
+   }
 
-PORTB.0 = 0;
-PORTB.1 = 0;
 
 while (1)
       {
       // Place your code here
-	PORTD.5 = 0;
-	PORTD.6 = 0;
+
       }
 }
