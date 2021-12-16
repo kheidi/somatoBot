@@ -211,7 +211,7 @@ delay_ms(600);
 stopMotors();
 resetAllEncoderCounts();
 setLCDbrightness(255);
-setLCDColor(CHARTREUSE);
+setLCDColor(PINK);
 printStringLCD("My message");
 
 TIMSK1=(0<<ICIE1) | (0<<OCIE1B) | (1<<OCIE1A) | (0<<TOIE1);
