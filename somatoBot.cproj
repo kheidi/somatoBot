@@ -30,15 +30,15 @@
     <EraseKey />
     <AsfFrameworkConfig>
       <framework-data xmlns="">
-  <options />
-  <configurations />
-  <files />
-  <documentation help="" />
-  <offline-documentation help="" />
-  <dependencies>
-    <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.49.1" />
-  </dependencies>
-</framework-data>
+        <options />
+        <configurations />
+        <files />
+        <documentation help="" />
+        <offline-documentation help="" />
+        <dependencies>
+          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.49.1" />
+        </dependencies>
+      </framework-data>
     </AsfFrameworkConfig>
     <avrtool>com.atmel.avrdbg.tool.jtagice3plus</avrtool>
     <avrtoolserialnumber>J30200025955</avrtoolserialnumber>
@@ -73,10 +73,13 @@
     <Folder Include="PWMDevel\">
       <Visible>false</Visible>
     </Folder>
-    <Folder Include="Robot Trajectory\">
+    <Folder Include="LCD\">
       <Visible>false</Visible>
     </Folder>
-    <Folder Include="LCD\">
+    <Folder Include="StateMachine\">
+      <Visible>false</Visible>
+    </Folder>
+    <Folder Include="RobotTrajectory\">
       <Visible>false</Visible>
     </Folder>
   </ItemGroup>
@@ -90,10 +93,13 @@
     <Compile Include="PWMDevel\pwmControl.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="Robot Trajectory\MotorControl.c">
+    <Compile Include="LCD\lcdFunctions.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="LCD\lcdFunctions.c">
+    <Compile Include="StateMachine\StateMachine.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="RobotTrajectory\Trajectory.c">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>

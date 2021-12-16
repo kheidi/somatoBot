@@ -13,72 +13,154 @@ State machine used to control the robot's simulations based on the button presse
 ************************************************************************************/
 
 #include "StateMachine.h" 
-int S1, S1, S2, S3, S4, NormalMode, NoiseMode, ReadyToStart, E_Stop, Surprise;
+#include "LCD/lcdFunctions.h"
 
-void StateMachine (){
+// extern volatile long int motorACount;
+// extern volatile long int motorBCount;
+//extern float theta1_counts, theta2_counts; 
 
-if ((Buttons | 0b0000001) == 0b0000001) {
-    Button1Pressed = 1;    
+int S0, S1, S1, S2, S3, S4, S5, BP1, BP2, BP3, BP4, Normal, Noise, ReadyToStart, EStop, Surprise,test, ActionCompleted, Restart;
+int S0 = 1; 
+
+void StateMachine (long int LOCALmotorACount, long int LOCALmotorBCount){
+	
+float x0, y0, r, w, t;
+int Ntheta1_counts, Ntheta2_counts;
+
+struct theta mytheta;
+
+if ((PINC & Button1Pressed) == 0b0000001) {
+    BP1 = 1;    
 } else{
-    Button1Pressed = 0;
+    BP1 = 0;
 }
 
-if ((Buttons | 0b0000010) == 0b0000010) {
-    Button2Pressed = 1;    
+if ((PINC & Button2Pressed) == 0b0000010) {
+    BP2 = 1;    
 } else{
-    Button2Pressed = 0;
+    BP2 = 0;
 }
 
-if ((Buttons | 0b00000100) == 0b00000100) {
-    Button3Pressed = 1;    
+if ((PINC & Button3Pressed) == 0b00000100) {
+    BP3 = 1;    
 } else{
-    Button3Pressed = 0;
+    BP3 = 0;
 }
 
-if ((Buttons | 0b00001000) == 0b00001000) {
-    Button4Pressed = 1;    
+if ((Buttons & Button4Pressed) == 0b00001000) {
+    BP4 = 1;    
 } else{
-    Button4Pressed = 0;
+    BP4 = 0;
 
 }
 
 // State 0: Waiting to start 
 // State 1: Button 1 Pressed -> normal mode
 // State 2: Button 2 Pressed -> Noise mode
-// Sate 3: Button 3 pressed -> MERRY CHRISTMAS!
+// Sate 3: Button 3 & 1 pressed -> MERRY CHRISTMAS!
 // State 4: Button 4 pressed -> E-stop -> yellow buttom
+// State 5: Button 3 pressed -> Restart - move arm initial position
 
-S0 = (S0 || (S3&&Button4Pressed)) &&!S1 &&!S3 &&!S4:
-S1 = (S1 || (S0&&Button1Pressed)) &&!S3;
-S2 = (S2 || (S0&&Button2Pressed)) &&!S3;
-S3 = (S3 || (S1&&Button4Pressed) || (S2&&Button4Pressed) || (S3&&Button4Pressed)) &&! S0);
-S4 = (S4 || (S0&&Button3Pressed) &&!S3);
+S0 = (S0 || (S3&&BP4) || (S5&&BP3)) &&!S1 &&!S2 &&!S4;
+S1 = (S1 || (S0&&BP1) &&!BP4) &&!S3;
+S2 = (S2 || (S0&&BP2) &&!BP4) &&!S3;
+S3 = (S3 || (S1&&BP4) || (S2&&BP4) || (S4&&BP4)) &&! S0;
+S4 = (S4 || (S0&&BP3&&BP1) &&!BP4) &&!S3;
+S5 = (S5 || (S2&&ActionCompleted) || (S1&&ActionCompleted)) &&!S0;
+
 
 ReadyToStart = (S0)&&!S1&&!S2&&!S3&&!S4;
-NormalMode = (S1)&&!S0&&!S2&&!S3&&!S4;
-NoiseMode = (S2)&&!S0&&!S1&&!S3&&!S4;
-Surprise = (S3)&&!S0&&!S1&&!S2&&!S4; 
-E_Stop = (S4)&&!S0&&!S1&&!S2&&!S3;
+Normal = (S1)&&!S0&&!S2&&!S3&&!S4&!ActionCompleted;
+Noise = (S2)&&!S0&&!S1&&!S3&&!S4&!ActionCompleted;
+Surprise = (S4)&&!S0&&!S1&&!S2&&!S3; 
+EStop = (S3)&&!S0&&!S1&&!S2&&!S4;
+Restart = (S5)&&!S0 &&!S1 &&!S2 &&!S3 &&!S4;
 
 if (ReadyToStart)
 {
-    E_Stop (); 
+    E_Stop ();
+	setLCDColor(CHARTREUSE);
+	printStringLCD("Ready...");
+	
 }
-if (NormalMode)
+if (Normal)
 {
-    NormalMode(motorACount, theta1_counts, motorBCount, theta2_counts);
+    setLCDColor(PINK);
+	printStringLCD("Normal Mode");
+	//resetAllEncoderCounts();
+	// Link Trajectory calculation
+	r = 0.03;
+	t = 1;
+	w = 50; //0.02s
+	x0=.03;
+	y0=.02;
+	mytheta = Trajectory(x0, y0, r, w, t); // variable to get thet1 & theta2
+
+//convert to encoder count to send to the motor
+	Ntheta1_counts =  AngleToCountsConversion (mytheta.theta1);
+	Ntheta2_counts =  AngleToCountsConversion (mytheta.theta2);
+
+	//NormalMode (motorACount, Ntheta1_counts, motorBCount, Ntheta2_counts);
+	if (abs(LOCALmotorACount)<=Ntheta1_counts)
+	{
+		runMotor(15, MOTOR_A, CCW);
+	} else
+	{
+		StopMotorA();
+	}
+	
+	if(LOCALmotorBCount<=Ntheta2_counts)
+	{
+	
+		runMotor(15, MOTOR_B, CW);
+
+	} else 
+	{
+	    StopMotorB();
+	} 
+	
+	if ((abs(LOCALmotorACount)>=Ntheta1_counts)&&(LOCALmotorBCount>=Ntheta2_counts))
+	{
+		ActionCompleted = 1;
+	}
+	
+	
+	
+	
+} 
+if (Noise)
+{ 
+	setLCDColor(YELLOW);
+	printStringLCD("Noise Added");
+	resetAllEncoderCounts();
+	NoiseMode( LOCALmotorACount, Ntheta1_counts, LOCALmotorBCount, Ntheta2_counts);
+	ActionCompleted = 1;
+	
 }
-if (NoiseMode)
+if (EStop)
 {
-    NoiseMode(motorACount, theta1_counts, motorBCount, theta2_counts);
-}
-if (E_Stop)
-{
-    E_Stop();
+	setLCDColor(RED);
+	printStringLCD("E-Stop Pressed!");
+	 E_Stop();
+	ActionCompleted = 0;
+	
 }
 if (Surprise)
 {
-    //code to display MERRY CHIRSTMAS
+	//COLOR
+	printStringLCD("MERRY CHRISTMAS!");
+	
 }
+if(Restart) 
+{
+	setLCDColor(PURPLE);
+	printStringLCD("Move arm to \ninitial pos-PB3");
+}
+
+
+// if (ActionCompleted)
+// {
+// 		
+// }
 
 }

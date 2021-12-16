@@ -14,9 +14,11 @@ Functions used to control the trajectory of a two link robot.
 
 #include "Trajectory.h"
 
- extern float theta1_counts, theta2_counts;  // for the control law
+// extern float theta1_counts, theta2_counts;  // for the control law
  extern unsigned int e1, m1, e2, m2; //or float? -->  for the control law
  extern struct theta mytheta; //get thetas from the struct
+ extern volatile long int motorACount;
+ extern volatile long int motorBCount;
 
 /*
 ** ===================================================================
@@ -42,9 +44,8 @@ Functions used to control the trajectory of a two link robot.
 
 struct theta Trajectory(float x0, float y0, float r, float w, float t)
 {
-	float x, y, l1, l2, alpha, beta ,phi, denominator, numerator; // variable will be time dependent
+	float x, y, l1, l2, theta1Rad, theta2Rad; // variable will be time dependent
     struct theta mytheta;
-	int i;
 	
     //circular trajectory
     l1 = 0.153; //[m]
@@ -54,34 +55,26 @@ struct theta Trajectory(float x0, float y0, float r, float w, float t)
 	
     x = ((r*cos(2*PI*w*t))+x0);
     y = ((r*sin(2*PI*w*t))+y0);
-// 	denominator= (2*l1*(sqrt(pow(x,2)+pow(y,2))));
-// 	numerator = (pow(x,2)+pow(y,2)-pow(l1,2)-pow(l2,2));	
 	
-	alpha = acos((pow(l1,2)+pow(l2,2)-pow(x,2)-pow(y,2))/(2*l1*l2));
-	mytheta.theta2 = (PI -  alpha)*(180/PI);
+
+    // Inverse Kinematics - thetas in radians
+	theta2Rad = acos((pow(x,2)+pow(y,2)-pow(l1,2)-pow(l2,2))/(2*l1*l2)); //wrist down
+ 	theta1Rad = atan(y/x) - atan((l2*sin(mytheta.theta2))/(l1+l2*cos(mytheta.theta2))) ; //wrist down
 	
-	denominator = sqrt(pow(x,2)+pow(y,2));
-	numerator = sin(alpha)*l1 ;
-	//beta = atan2(y,x);
-	beta = atan(y/x);
-	phi = asin(numerator/denominator);
-	mytheta.theta1 = (beta - phi)*(180/PI);
-
-	mytheta.theta1 = abs(mytheta.theta1);
-    // Inverse Kinematics
-// 	  mytheta.theta2 = acos((pow(x,2)+pow(y,2)-pow(l1,2)-pow(l2,2))/(2*l1*l2)); //wrist down
-// 	  mytheta.theta1 = atan(y/x) - atan((l2*sin(mytheta.theta2))/(l1+l2*cos(mytheta.theta2))) ; //wrist down
-
-    
-    return mytheta; 
+	// Radians to angle conversion:
+	mytheta.theta1 = abs(theta1Rad*(180/PI));
+	mytheta.theta2 = abs(theta2Rad*(180/PI));
+	
+	return mytheta; 
 
 }
 
-float AngleToCountsConversion (float theta)
+int AngleToCountsConversion (float theta)
 {
 
 
-	 float percentage, theta_counts;
+	 float percentage;
+	 int theta_counts;
 	 percentage = theta/360;
 	 theta_counts = percentage*900;
 	
@@ -106,31 +99,31 @@ void StopMotorB (void)
 	OCR2B = 0;
 }
 
-void NormalMode (int motorACount, int theta1_counts, int motorBCount, int theta2_counts)
+void NormalMode (int LOCALmotorACount, int LOCALtheta1_counts, int LOCALmotorBCount, int LOCALtheta2_counts)
 {
-    if (abs(motorACount)<theta1_counts)
+		
+    if (abs(LOCALmotorACount)<LOCALtheta1_counts)
 	{
 		runMotor(20, MOTOR_A, CCW);
-	}
-	else
+	} else
 	{
 		StopMotorA();
 	}
-	if(motorBCount<theta2_counts)
+	
+	if(LOCALmotorBCount<LOCALtheta2_counts)
 	{
 	
 		runMotor(20, MOTOR_B, CW);
 
-	} 
-	else 
+	} else 
 	{
 	    StopMotorB();
 	} 
 }
 
-void NoiseMode (int motorACount, int theta1_counts, int motorBCount, int theta2_counts)
+void NoiseMode (int LOCALmotorACount, int LOCALtheta1_counts, int LOCALmotorBCount, int LOCALtheta2_counts)
 {
-    if (abs((motorACount+10))<theta1_counts)
+    if (abs((LOCALmotorACount+10))<LOCALtheta1_counts)
 	{
 		runMotor(20, MOTOR_A, CCW);
 	}
@@ -138,7 +131,7 @@ void NoiseMode (int motorACount, int theta1_counts, int motorBCount, int theta2_
 	{
 		StopMotorA();
 	}
-	if((motorBCount+10)<theta2_counts)
+	if((LOCALmotorBCount+10)<LOCALtheta2_counts)
 	{
 	
 		runMotor(20, MOTOR_B, CW);
@@ -158,9 +151,11 @@ void E_Stop (void)
   e2 = 0;
   mytheta.theta1 = 0;
   mytheta.theta1 = 0;
-  theta1_counts = 0;
-  theta2_counts = 0;
+  //theta1_counts = 0;
+  //theta2_counts = 0;
   resetAllEncoderCounts();
+  StopMotorB();
+  StopMotorA();
 }
 
 

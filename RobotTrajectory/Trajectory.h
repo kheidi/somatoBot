@@ -16,8 +16,11 @@ Functions used to control the trajectory of a two link robot.
 
 
 #include <stdio.h> 
+#include <stdlib.h>
 #include <math.h>  
-#include "PWMDevel/pwmControl.h" // for encoder reset fucntion
+#include "PWMDevel/pwmControl.h"
+
+
 
 /*
 ** ===================================================================
@@ -49,10 +52,12 @@ struct theta {
 };
 
 struct theta Trajectory(float x0, float y0, float r, float w, float t);
-float AngleToCountsConversion (float theta);
-void NormalMode (int motorACount, int theta1_counts, int motorBCount, int theta2_counts);
+int AngleToCountsConversion (float theta);
+void NormalMode (int LOCALmotorACount, int LOCALtheta1_counts, int LOCALmotorBCount, int LOCALtheta2_counts);
 void NoiseMode (int motorACount, int theta1_counts, int motorBCount, int theta2_counts);
 void E_Stop(void);
+void StopMotorA();
+void StopMotorB();
 	
 	
 #endif

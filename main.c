@@ -32,10 +32,11 @@ Data Stack size         : 512
 
 volatile long int motorACount;
 volatile long int motorBCount;
+//extern volatile int S0, S1, S2, S3, S4;
 
 // --- For position control:
-float x0, y0, r, w, t; // for the trajectory function
-float kp_1, kp_2, kd_1, kd_2, k1_1, k1_2, k0_1, k0_2, theta1_counts, theta2_counts;  // for the control law
+/*float x0, y0, r, w, t;*/ // for the trajectory function
+float kp_1, kp_2, kd_1, kd_2, k1_1, k1_2, k0_1, k0_2;  // for the control law
 unsigned int e1, m1, e2, m2; //or float? -->  for the control law
 struct theta mytheta; //get thetas from the struct
 
@@ -46,55 +47,37 @@ struct theta mytheta; //get thetas from the struct
 
 // Standard Input/Output functions
 #include <stdio.h>
-
+#include <stdlib.h>
 // Timer1 output compare A interrupt service routine
 interrupt [TIM1_COMPA] void timer1_compa_isr(void)
 {
 
-	StateMachine();
-	// if (S0)
-	// {
-	// 	//LCD DISPLAY WAITING, OR READY...
-	// }
-	// if (S1)
-	// { 
-	// 	NormalMode(motorACount, theta1_counts, motorBCount, theta2_counts);
-	// 	// LDC TO DISPLAYS "NORMAL MODE" OR SOMETHING ALONG THAT LINE
-	// } else if (S2)
-	// {
-	// 	NoiseMode(motorACount, theta1_counts, motorBCount, theta2_counts);	
-	// 	// LDC TO DISPLAYS "NOISE MODE" OR SOMETHING ALONG THAT LINE
-	// } else if (S3)
-	// {
-	// 	E_Stop();
-	// 	// LDC TO DISPLAYS "E_STOP PRESSED" OR SOMETHING ALONG THAT LINE
-	// } else if (S4) 
-	// {
-	// 	//MERRY CHRISTMAS!
-	// }
+	StateMachine(motorACount, motorBCount);
+// if (S0)
+// {
+// 	NormalMode()
+// }
 
-	// if (abs(motorACount)<theta1_counts)
-	// {
-	// 	runMotor(20, MOTOR_A, CCW);
-	// }
-	// else
-	// {
-	// 	StopMotorA();
-	// }
-	// if(motorBCount<theta2_counts)
-	// {
-	
-	// 	runMotor(20, MOTOR_B, CW);
-
-	// } 
-	// else 
-	// {
-	// 	OCR2A = 0;
-	// 	OCR2B = 0;
-	// 	OCR2A = 0;
-	// 	OCR2B = 0;
-	// }
-	
+// Test IK Math
+// 	 if ((abs(motorACount))<theta1_counts)
+// 	 {
+// 		runMotor(40, MOTOR_A, CCW);
+// 	 }
+// 	 else
+// 	 {
+// 		 StopMotorA();
+// 	 }
+// 	 if(abs(motorBCount)<theta2_counts)
+// 	 {
+// 	
+// 	 	runMotor(40, MOTOR_B, CW);
+// 
+// 	 } 
+// 	 else 
+// 	 {
+// 		StopMotorB();
+// 	 }
+// 	
 
 }
 
@@ -229,6 +212,18 @@ TWCR=(0<<TWEA) | (0<<TWSTA) | (0<<TWSTO) | (0<<TWEN) | (0<<TWIE);
 delay_ms(600);
 stopMotors();
 resetAllEncoderCounts();
+// Link Trajectory calculation
+// 			r = 0.03;
+// 			t = 1;
+// 			w = 50; //0.02s
+// 			x0=.03;
+// 			y0=.02;
+// 			mytheta = Trajectory(x0, y0, r, w, t); // variable to get thet1 & theta2
+// 		
+// 		//convert to encoder count to send to the motor
+// 			theta1_counts =  AngleToCountsConversion (mytheta.theta1);
+// 			theta2_counts =  AngleToCountsConversion (mytheta.theta2);
+// 		
 TIMSK1=(0<<ICIE1) | (0<<OCIE1B) | (1<<OCIE1A) | (0<<TOIE1);
 
 // delay_ms(1000);
@@ -275,27 +270,16 @@ TIMSK1=(0<<ICIE1) | (0<<OCIE1B) | (1<<OCIE1A) | (0<<TOIE1);
  
 #asm("sei")
 
-			// Link Trajectory calculation
-			r = 0.03;
-			t = 1;
-			w = 50; //0.02s
-			x0=.03;
-			y0=.02;
-			mytheta = Trajectory(x0, y0, r, w, t); // variable to get thet1 & theta2
-
-			//convert to encoder count to send to the motor
-			theta1_counts =  AngleToCountsConversion (mytheta.theta1);
-			theta2_counts =  AngleToCountsConversion (mytheta.theta2);
- 
+	
 while (1)
 
       {
 					
 			// Command law gains:
-			kp_1 = 0.1;
-			kp_2 = 0.1;
-			kd_1 = 0;
-			kd_2 = 0;
+// 			kp_1 = 0.1;
+// 			kp_2 = 0.1;
+// 			kd_1 = 0;
+// 			kd_2 = 0;
 
 			// k0_1 = Kp_1 + kd_1/delta_t;
 			// k1_1 = - kd_1/delta_t;
