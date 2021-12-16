@@ -23,9 +23,10 @@ Data Stack size         : 512
 #include <mega328p.h>
 #include <delay.h>
 #include "PWMDevel/generalFunctions.h"
-#include "Robot Trajectory/Trajectory.h"
+#include "RobotTrajectory/Trajectory.h"
 #include "LCD/lcdFunctions.h"
 #include "PWMDevel/pwmControl.h"
+#include "StateMachine/StateMachine.h"
 
 // Declare your global variables here
 
@@ -50,31 +51,49 @@ struct theta mytheta; //get thetas from the struct
 interrupt [TIM1_COMPA] void timer1_compa_isr(void)
 {
 
-	if (abs(motorACount)<theta1_counts)
-	{
-		runMotor(20, MOTOR_A, CCW);
-	}
-	else
-	{
-		OCR0A = 0;
-		OCR0B = 0;
-		OCR0A = 0;
-		OCR0B = 0;
+	StateMachine();
+	// if (S0)
+	// {
+	// 	//LCD DISPLAY WAITING, OR READY...
+	// }
+	// if (S1)
+	// { 
+	// 	NormalMode(motorACount, theta1_counts, motorBCount, theta2_counts);
+	// 	// LDC TO DISPLAYS "NORMAL MODE" OR SOMETHING ALONG THAT LINE
+	// } else if (S2)
+	// {
+	// 	NoiseMode(motorACount, theta1_counts, motorBCount, theta2_counts);	
+	// 	// LDC TO DISPLAYS "NOISE MODE" OR SOMETHING ALONG THAT LINE
+	// } else if (S3)
+	// {
+	// 	E_Stop();
+	// 	// LDC TO DISPLAYS "E_STOP PRESSED" OR SOMETHING ALONG THAT LINE
+	// } else if (S4) 
+	// {
+	// 	//MERRY CHRISTMAS!
+	// }
 
-	}
-	if(motorBCount<theta2_counts)
-	{
+	// if (abs(motorACount)<theta1_counts)
+	// {
+	// 	runMotor(20, MOTOR_A, CCW);
+	// }
+	// else
+	// {
+	// 	StopMotorA();
+	// }
+	// if(motorBCount<theta2_counts)
+	// {
 	
-		runMotor(20, MOTOR_B, CW);
-		//stopMotors();
-	} 
-	else 
-	{
-		OCR2A = 0;
-		OCR2B = 0;
-		OCR2A = 0;
-		OCR2B = 0;
-	}
+	// 	runMotor(20, MOTOR_B, CW);
+
+	// } 
+	// else 
+	// {
+	// 	OCR2A = 0;
+	// 	OCR2B = 0;
+	// 	OCR2A = 0;
+	// 	OCR2B = 0;
+	// }
 	
 
 }
@@ -210,10 +229,6 @@ TWCR=(0<<TWEA) | (0<<TWSTA) | (0<<TWSTO) | (0<<TWEN) | (0<<TWIE);
 delay_ms(600);
 stopMotors();
 resetAllEncoderCounts();
-setLCDbrightness(255);
-setLCDColor(PINK);
-printStringLCD("My message");
-
 TIMSK1=(0<<ICIE1) | (0<<OCIE1B) | (1<<OCIE1A) | (0<<TOIE1);
 
 // delay_ms(1000);
