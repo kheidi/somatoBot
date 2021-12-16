@@ -23,7 +23,7 @@ Data Stack size         : 512
 #include <mega328p.h>
 #include <delay.h>
 #include "PWMDevel/generalFunctions.h"
-#include "Robot Trajectory/MotorControl.h"
+#include "Robot Trajectory/Trajectory.h"
 #include "LCD/lcdFunctions.h"
 #include "PWMDevel/pwmControl.h"
 
