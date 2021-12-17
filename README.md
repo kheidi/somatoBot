@@ -1,4 +1,5 @@
 # somatoBot
+For more information view the somatoBot_Report.pdf and somatoBot_Presentation.pdf
 
 ## How to
 To run main somatobot functions upload the somatoBot project (in home directory) to an Arduino Uno.
