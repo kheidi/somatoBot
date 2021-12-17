@@ -1,32 +1,53 @@
-/*
-* Author: K. Heidi Fehr (kfehr@wisc.edu)
-* Github: @kheidi
-* Filename: lcdFunctions.c
-* Description: Functions to use with Adafruit LCD with serial backpack
-*              https://cdn-learn.adafruit.com/downloads/pdf/usb-plus-serial-backpack.pdf
-* Created:  2021-12-06T01:18:31.679Z
-* (c)Copyright 2021
-*/
+/************************************************************************************
+Copyright 2021 - K. Heidi Fehr & Stephanie B. Hernández
+  Project : lcdFunctions
+  File    : lcdFunctions.c
+  Author  : K. Heidi Fehr & Stephanie B. Hernández
+  Company : University of Wisconsin - Madison
+            1513 Univ. Ave. Madison WI 53706
+Revision history    Date         Name                      Reason
+        -------    --------     ------                     -------------------------------
+          1.00     12/06/2021    K. Fehr                    Development
 
-/**
- * Non-backpack vid: https://www.youtube.com/watch?v=_J3Dp9TGdLY
- */
+Parts of this program were created by the CodeWizardAVR V3.31 
+Automatic Program Generator
+� Copyright 1998-2017 Pavel Haiduc, HP InfoTech s.r.l.
+http://www.hpinfotech.com
 
+Chip type               : ATmega328P
+Program type            : Application
+AVR Core Clock frequency: 16.000000 MHz
+Memory model            : Small
+External RAM size       : 0
+Data Stack size         : 512
 
-/** LCD is connected by three wires, GND, 5V and DATA
- * According to the PDF link above the actions are controled by 
- * messages it gets.
- * ? Not sure how things are sent to serial? simply written? LCD library?
- * For now will just map based on the PDF 
- **/
+Info on LCD: https://cdn-learn.adafruit.com/downloads/pdf/usb-plus-serial-backpack.pdf
+************************************************************************************/
 
 #include "lcdFunctions.h"
 
+/*
+** ===================================================================
+** Method        : clearLCD
+**
+** Description   : Clears the LCD
+**
+** ===================================================================
+*/
 void clearLCD(void){
 // 	putchar(0xFE);
 // 	putchar(0x58);
 // 	delay_ms(LCDdelay);
 }
+
+/*
+** ===================================================================
+** Method        : makePink
+**
+** Description   : Sets LCD color to pink.
+**
+** ===================================================================
+*/
 void makePink(void){
 // 	putchar(0xFE);
 // 	putchar(0xD0);
@@ -36,6 +57,14 @@ void makePink(void){
 // 	delay_ms(LCDdelay);
 }
 
+/*
+** ===================================================================
+** Method        : setLCDColor
+**
+** Description   : Set LCD backlight to colors as defined in .h
+**
+** ===================================================================
+*/
 void setLCDColor(char colorMacro){
 // 	putchar(0xFE);
 // 	putchar(0xD0);
@@ -83,6 +112,14 @@ void setLCDColor(char colorMacro){
 // 	delay_ms(LCDdelay);
 }
 
+/*
+** ===================================================================
+** Method        : printStrinkLCD
+**
+** Description   : Sets LCD color to pink.
+**
+** ===================================================================
+*/
 void printStringLCD(char *ch)
 {
 	puts(ch);

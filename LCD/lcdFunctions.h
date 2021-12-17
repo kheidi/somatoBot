@@ -1,11 +1,28 @@
-/*
-* Author: K. Heidi Fehr (kfehr@wisc.edu)
-* Github: @kheidi
-* Filename: lcdFunctions.h
-* Description: description
-* Created:  2021-12-06T01:18:31.693Z
-* (c)Copyright 2021
-*/
+/************************************************************************************
+Copyright 2021 - K. Heidi Fehr & Stephanie B. Hernández
+  Project : lcdFunctions
+  File    : lcdFunctions.c
+  Author  : K. Heidi Fehr & Stephanie B. Hernández
+  Company : University of Wisconsin - Madison
+            1513 Univ. Ave. Madison WI 53706
+Revision history    Date         Name                      Reason
+        -------    --------     ------                     -------------------------------
+          1.00     12/06/2021    K. Fehr                    Development
+
+Parts of this program were created by the CodeWizardAVR V3.31 
+Automatic Program Generator
+� Copyright 1998-2017 Pavel Haiduc, HP InfoTech s.r.l.
+http://www.hpinfotech.com
+
+Chip type               : ATmega328P
+Program type            : Application
+AVR Core Clock frequency: 16.000000 MHz
+Memory model            : Small
+External RAM size       : 0
+Data Stack size         : 512
+
+Info on LCD: https://cdn-learn.adafruit.com/downloads/pdf/usb-plus-serial-backpack.pdf
+************************************************************************************/
 
 #ifndef LCDFUNCTIONS_H_
 #define LCDFUNCTIONS_H_

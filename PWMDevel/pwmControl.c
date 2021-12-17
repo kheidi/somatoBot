@@ -150,6 +150,17 @@ void PCINT_Encoder_init()
     PCIFR=(0<<PCIF2) | (0<<PCIF1) | (1<<PCIF0);
 }
 
+/*
+** ===================================================================
+** Method        : PI_INT encoder counter
+**
+** Description   :  Reads rising edges of encoders and either adds
+                    or subtracts counts to the global motor
+                    counters.
+**
+**
+** ===================================================================
+*/
 
 // Pin change 8-14 interrupt service routine
 interrupt [PC_INT0] void pin_change_isr0(void)
@@ -186,8 +197,7 @@ interrupt [PC_INT0] void pin_change_isr0(void)
     //read and update RightPedal
     if(changedbits & motorBMask) //something has changed in RightPedal's state
     {
-        //! Need to fix this so that the bit shifting works with the blank space... somehow?
-		changeIA = ((PINBhistory & motorBMask) & 0b00000100) >> 2;
+        changeIA = ((PINBhistory & motorBMask) & 0b00000100) >> 2;
 		changeIB = ((PINBhistory & motorBMask) & 0b00010000) >> 3;
 		changeJA = ((PINBcurrent & motorBMask) & 0b00000100) >> 2;
 		changeJB = ((PINBcurrent & motorBMask) & 0b00010000) >> 3;
@@ -196,7 +206,6 @@ interrupt [PC_INT0] void pin_change_isr0(void)
     }
 
     PINBhistory = PINBcurrent;   
-
 
 }
 
@@ -291,68 +300,3 @@ void stopMotors(void)
     
 }
 
-
-//! Change description
-/*
-** ===================================================================
-** Method        : readEncoder
-**
-** Description   :  takes in an 8-bit number representing the encoder channel number, 
-**                  reads the value from the correct encoder channel and returns 
-**                  the full encoder count (i.e. full dynamic range) in addition 
-**                  to an error if an invalid channel number is used.  Valid channels are 0-2.
-**
-** Parameters:
-**      NAME            - DESCRIPTION
-**      channelNum      - encoder channel you want to write to
-**
-** Returns:
-**       local_enc      - An encodermodel struct that contains 'EncoderCount' and 'Error'.
-**                        the encoder count reads the raw count from the encoder
-**                        and error is an error message.
-**             
-**
-** ===================================================================
-*/
-//! Declare in h file once ready
-// struct encodermodel readEncoders(char encoderChannelNum)
-// {
-// 
-// 	// unsigned char valueHigh;
-// 	// unsigned char valueLow;
-// 	// char high_set;
-// 	// char high_clear;
-// 	// char low_set;
-// 	// char low_clear;
-//     // struct encodermodel local_enc;
-//     // // Error return if an invalid channel no. is used
-//     // if (encoderChannelNum>2){
-//     //     local_enc.Error = NOT_SUPPORTED_CHANNEL;
-//     // }
-// 	
-// 	// high_clear = (2*encoderChannelNum) + 6; //Sets actual channel (cleared/enabled version)
-//     // high_set = (high_clear | 0b00100000);   //Disables the port
-// 	
-// 	// low_clear = (2*encoderChannelNum) + 7; //Sets actual channel (cleared/enabled version)
-// 	// low_set = (low_clear | 0b00100000);    //Disables the port
-//     
-//     // DATA_mode = setINPUT; 
-// 	// ADDR_write = high_set;          //Configure data bus PORT as input
-// 	// delay_us(1);
-//     // ADDR_write = high_clear;        //Gate signal LOW
-//     // delay_us(1);                    //Wait for decoder output to propagate
-//     // valueHigh = 0x0F&DATA_read;     //Read data bus PIN into the MCU
-//     // ADDR_write = high_set;          //Set gate signal to disable decoder chip
-// 	
-// 	// ADDR_write = low_set; 
-// 	// delay_us(1); 
-// 	// ADDR_write = low_clear;         //Gate signal LOW
-// 	// delay_us(1);                    //Wait for decoder output to propagate
-// 	// valueLow = DATA_read;           //Read data bus PIN into the MCU
-// 	// ADDR_write = low_set;           //Set gate signal to disable decoder chip
-//     
-// 	
-// 	// local_enc.EncoderCount = ((int)valueHigh<<8 | valueLow); //shift the high value and combine with the Low value so it is all stored in the 16 bit int
-// 	// local_enc.Error = SUCCESS;
-// 	// return local_enc;
-// }
