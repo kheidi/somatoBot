@@ -20,6 +20,7 @@ State machine used to control the robot's simulations based on the button presse
 #define Button2Pressed 0b00000010//PINC.1 - Weird mode
 #define Button3Pressed 0b00000100//PINC.2 - Surprise
 #define Button4Pressed 0b00001000//PINC.3 - (E-stop) 
+#define ButtonSurprise 0b00010000//PINC.4 - Surprise
 
 
 /* CHANGE / UPDATE INFO

@@ -45,7 +45,7 @@ int flt2fxd(float x){
 	int QF;
 	int fixedPoint;
 	
-	WL = 8;
+	WL = 16;
 	
 	QI = floor(log(fabs(x))/log(2)+2);
 	QF = WL-QI;

@@ -62,18 +62,16 @@ if ((Buttons & Button4Pressed) == 0b00001000) {
 // State 4: Button 4 pressed -> E-stop -> yellow buttom
 // State 5: Button 3 pressed -> Restart - move arm initial position
 
-S0 = (S0 || (S5&&BP3)) &&!S1 &&!S2 &&!S4;
+S0 = (S0 || (S5&&BP3)) &&!S1 &&!S2;
 S1 = (S1 || (S0&&BP1) &&!BP4) &&!S3;
 S2 = (S2 || (S0&&BP2) &&!BP4) &&!S3;
-S3 = (S3 || (S1&&BP4) || (S2&&BP4) || (S4&&BP4)) &&! S0;
-S4 = (S4 || (S0&&BP3&&BP1) &&!BP4) &&!S3;
+S3 = (S3 || (S1&&BP4) || (S2&&BP4)) &&! S0;
 S5 = (S5 || (S2&&ActionCompleted) || (S1&&ActionCompleted)) &&!S0;
 
 
 ReadyToStart = (S0)&&!S1&&!S2&&!S3&&!S4;
 Normal = (S1)&&!S0&&!S2&&!S3&&!S4&!ActionCompleted;
 Noise = (S2)&&!S0&&!S1&&!S3&&!S4&!ActionCompleted;
-Surprise = (S4)&&!S0&&!S1&&!S2&&!S3; 
 EStop = (S3)&&!S0&&!S1&&!S2&&!S4;
 Restart = (S5)&&!S0 &&!S1 &&!S2 &&!S3 &&!S4;
 
@@ -112,13 +110,6 @@ if (EStop)
 		counter = 0;
 		S3 = 0;
 	}
-	
-}
-
-if (Surprise)
-{
-	//COLOR
-	printStringLCD("MERRY CHRISTMAS!");
 	
 }
 

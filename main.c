@@ -40,6 +40,7 @@ float kp_1, kp_2, kd_1, kd_2, k1_1, k1_2, k0_1, k0_2, delta_t;  // for the contr
 signed int e1, m1, e2, m2, e1_prev; //or float? -->  for the control law
 struct theta mytheta; //get thetas from the struct
 int mode;
+int xcount;
 
 //(x0,y0) -> initial position of the robot ---- move the robot back to position (x0, y0) always
 //r -> radios of the circle the link will move
@@ -83,7 +84,7 @@ interrupt [TIM1_COMPA] void timer1_compa_isr(void)
 		e1 = theta1_counts - (motorACount); // our end position was calculated with IK
 		m1 = kp_1*e1;
 		e1 = theta1_counts - motorACount; // our end position was calculated with IK
-		m1 = k0_1*e1 + k1_1*e1_prev;
+		m1 = ((long)k0_1*e1 + (long)k1_1*e1_prev)>>7;
 
 		 if (m1>100)
 		 {
@@ -338,6 +339,8 @@ k0_1 = kp_1 + kd_1/delta_t;
 k1_1 = - kd_1/delta_t;
 k0_2 = kp_2 + kd_2/delta_t;
 k1_2 = - kd_2/delta_t;
+k0_1 = flt2fxd(k0_1);
+k1_1 = flt2fxd(k1_1);
 // 	
 
 
@@ -422,6 +425,23 @@ while (1)
 			  setLCDColor(GREEN);
 			  printStringLCD("Ready...");
 			  TIMSK1 = 0;
+		  }else if (PINC & ButtonSurprise)
+		  {
+			  mode = 0;
+			  TIMSK1 = 0;
+			  E_Stop();
+			  printStringLCD("MERRY CHRISTMAS!");
+			  for (xcount = 0; xcount < 10; xcount++ )
+			  {
+			  setLCDColor(GREEN);
+			  delay_ms(500);
+			  setLCDColor(RED);
+			  delay_ms(500);
+			  }
+			  setLCDColor(YELLOW);
+			  printStringLCD("Press Yellow");
+			  
+			  
 		  }
 					
 
