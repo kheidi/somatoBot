@@ -23,23 +23,11 @@ State machine used to control the robot's simulations based on the button presse
 #define ButtonSurprise 0b00010000//PINC.4 - Surprise
 
 
-/* CHANGE / UPDATE INFO
+/* 
 ** ===================================================================
-** Method        : Trajectory
+** Method        : State Machine
 **
-** Description   : Uses two link robot kinematic to find the angles of the 
-*                   links for the robot to move in a circular trajectory.
-**
-**
-**
-** Parameters:
-**      NAME            - DESCRIPTION
-**      x0              - initial position in the x coordinate of the end of link 2 
-**      y0              - initial position in the y coordinate of the end of link 
-**      r               - radius of the circular trajectory of link 2
-**      w               - frequency to do a full rotation of the circular trajectory
-**      t               - actual time of computation
-**
+** Description   : Reads button presses to determine mode. Employs E-Stop
 ** ===================================================================
 */
 

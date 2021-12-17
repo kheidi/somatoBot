@@ -4,13 +4,14 @@ Automatic Program Generator
 � Copyright 1998-2019 Pavel Haiduc, HP InfoTech s.r.l.
 http://www.hpinfotech.com
 
-Project : 
-Version : 
-Date    : 12/11/2021
-Author  : 
-Company : 
-Comments: 
-
+Project : Lab13
+Version : v01
+Date    : 12/5/2021
+Author  : K. Heidi Fehr & Stephanie B. Hernandez Hernandez
+Company : University of Wisconsin - Madison
+		  1513 Univ. Ave. Madison WI 53706
+Comments: Main function of somatoBot demonstrating different
+		  sensorimotor modes.
 
 Chip type               : ATmega328P
 Program type            : Application
@@ -21,6 +22,8 @@ Data Stack size         : 512
 *******************************************************/
 
 #include <mega328p.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <delay.h>
 #include "PWMDevel/generalFunctions.h"
 #include "RobotTrajectory/Trajectory.h"
@@ -42,21 +45,13 @@ struct theta mytheta; //get thetas from the struct
 int mode;
 int xcount;
 
-//(x0,y0) -> initial position of the robot ---- move the robot back to position (x0, y0) always
-//r -> radios of the circle the link will move
-//w -> how fast I want to make a full circle (Hz)
-
-
-// Standard Input/Output functions
-#include <stdio.h>
-#include <stdlib.h>
 // Timer1 output compare A interrupt service routine
 interrupt [TIM1_COMPA] void timer1_compa_isr(void)
 {
 
 //	StateMachine();
 
-	if (mode == 1 || mode == 2)
+	if (mode == 1 || mode == 2) //Arm Simulation and fixed velocity mode
 	{
 		 if ((abs(motorACount))<theta1_counts)
 		 {
@@ -96,90 +91,6 @@ interrupt [TIM1_COMPA] void timer1_compa_isr(void)
 
 		 runMotor(m1, MOTOR_A, CW);
 		 e1_prev = e1;
-
-	}
-	
-// Normal Mode - motor count: 
-// 	 if ((abs(motorACount))<theta1_counts)
-// 	 {
-// 		runMotor(40, MOTOR_A, CCW);
-// 	 }
-// 	 else
-// 	 {
-// 		 StopMotorA();
-// 	 }
-// 	 if(abs(motorBCount)<theta2_counts)
-// 	 {
-// 	
-// 	 	runMotor(40, MOTOR_B, CW);
-// 
-// 	 } 
-// 	 else 
-// 	 {
-// 		StopMotorB();
-// 	 }
-
-		  
-		  // Motor Control Laws: 
-
-			//------Command Law: Link 1------
-			//Simple Law:
-			// e1 = theta1_counts - motorACount; // our end position was calculated with IK
-			// m1 = kp_1*e1;
-
-			//PD on Error:
-			//e1 = theta1_counts - motorACount; // our end position was calculated with IK
-			//m1 = k0_1*e1 + k1_1*e1_prev;
-
-
-			//------Command Law: Link 2------
-
-			//Simple Law:
-			// e2 = theta2_counts - motorBCount; // our end position was calculated with IK
-			// m2 = kp_2*e2;
-
-			//PD on Error:
-			//e2 = theta2_counts - motorBCount; // our end position was calculated with IK
-			//m2 = k0_2*e2 + k1_2*e2;
-
-
-// Normal Mode - Control Law: 
-// 	 e1 = theta1_counts - (motorACount); // our end position was calculated with IK
-// 	 
-// 	 m1 = kp_1*e1;
-// 	e1 = theta1_counts - motorACount; // our end position was calculated with IK
-// 	m1 = k0_1*e1 + k1_1*e1_prev;
-// 	
-// 	 if (m1>100)
-// 	 {
-// 		 m1 = 100;
-// 	 }else if (m1<=0)
-// 	 {
-// 		 m1 = 0;
-// 	 }
-// 	 
-// 	 runMotor(m1, MOTOR_A, CW);
-// 	 e1_prev = e1;
-
-// 	 	 if ((abs(motorACount))<theta1_counts)
-// 	 {
-// 		runMotor(40, MOTOR_A, CCW);
-// 	 }
-// 	 else
-// 	 {
-// 		 StopMotorA();
-// 	 }
-// 	 if(abs(motorBCount)<theta2_counts)
-// 	 {
-// 	
-// 	 	runMotor(40, MOTOR_B, CW);
-// 
-// 	 } 
-// 	 else 
-// 	 {
-// 		StopMotorB();
-// 	 }
-	 
 	
 
 }
@@ -246,8 +157,6 @@ OCR1AH=0x7D;
 OCR1AL=0x00;
 OCR1BH=0x00;
 OCR1BL=0x00;
-
-// -------- I want to change to a lower frequency
 
 // Timer/Counter 2 initialization
 // Clock source: System Clock
@@ -341,51 +250,7 @@ k0_2 = kp_2 + kd_2/delta_t;
 k1_2 = - kd_2/delta_t;
 k0_1 = flt2fxd(k0_1);
 k1_1 = flt2fxd(k1_1);
-// 	
 
-
-
-// delay_ms(1000);
-// 
-//runMotor(50,MOTOR_B,CW);
-//delay_ms(5000);
-// stopMotors();
-// delay_ms(1000);
-// runMotor(50,MOTOR_A,CCW);
-// delay_ms(5000);
-// stopMotors();
-// delay_ms(1);
-
-// delay_ms(1000);
-// 
-// runMotor(50,MOTOR_B,CW);
-// delay_ms(5000);
-// stopMotors();
-// delay_ms(1000);
-// runMotor(50,MOTOR_B,CCW);
-// delay_ms(5000);
-// stopMotors();
-// delay_ms(1);
-
-
-
-//  stopMotors();
-//  putchar(0xFE);
-//  putchar(0x58); //Clear
-//  delay_ms(20);
-//  
-//  //putchar(0xFE);
-//  putchar('H'); // H
-//  putchar(0x73); //S
-//  delay_ms(20);
-//  //delay_ms(1000);
-//  
-//  putchar(0xFE);
-//  putchar(0x58); //Clear
-//  delay_ms(20);
-//  
-//  putchar(0xFE);
-//  putchar('S'); //S
  
 #asm("sei")
 setLCDColor(GREEN);
@@ -444,32 +309,6 @@ while (1)
 			  
 		  }
 					
-
-
-
-			// Place your code here
-// 				runMotor(60, MOTOR_A, CCW);
-// 		 		delay_us(1000000);
-// 				runMotor(60, MOTOR_B, CW);
-// 				delay_us(1000000);
-// 				runMotor(70, MOTOR_A, CCW);
-//		 		delay_us(1000000);
-		// 		runMotor(70, MOTOR_B, CW);
-		// 		delay_us(1000000);
-		// 		runMotor(80, MOTOR_A, CCW);
-		// 		delay_us(1000000);
-		// 		runMotor(80, MOTOR_B, CW);
-		// 		delay_us(1000000);
-		// 		runMotor(90, MOTOR_A, CCW);
-		// 		delay_us(1000000);
-		// 		runMotor(90, MOTOR_B, CW);
-		// 		delay_us(1000000);
-		// 		runMotor(100, MOTOR_A, CCW);
-		// 		delay_us(1000000);
-		// 		runMotor(100, MOTOR_B, CW);
-		// 		delay_us(1000000);
-		// 		runMotor(0,MOTOR_A,CW);
- 		
 
 
       }
