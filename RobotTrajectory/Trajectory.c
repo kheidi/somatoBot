@@ -14,7 +14,7 @@ Functions used to control the trajectory of a two link robot.
 
 #include "Trajectory.h"
 
-// extern float theta1_counts, theta2_counts;  // for the control law
+ extern float theta1_counts, theta2_counts;  // for the control law
  extern unsigned int e1, m1, e2, m2; //or float? -->  for the control law
  extern struct theta mytheta; //get thetas from the struct
  extern volatile long int motorACount;
@@ -45,6 +45,7 @@ Functions used to control the trajectory of a two link robot.
 struct theta Trajectory(float x0, float y0, float r, float w, float t)
 {
 	float x, y, l1, l2, theta1Rad, theta2Rad; // variable will be time dependent
+	float temp;
     struct theta mytheta;
 	
     //circular trajectory
@@ -53,17 +54,23 @@ struct theta Trajectory(float x0, float y0, float r, float w, float t)
 	
 	//x0 = 0.03 , y0 = 0.02
 	
-    x = ((r*cos(2*PI*w*t))+x0);
-    y = ((r*sin(2*PI*w*t))+y0);
+   // x = ((r*cos(2*PI*w*t))+x0);
+   // y = ((r*sin(2*PI*w*t))+y0);
+	x = x0;
+	y = y0;
 	
+	temp = (x*x);
+	temp =  ((x*x)+(y*y)-(l1*l1)-(l2*l2));
+	temp =  ((x*x)+(y*y)-(l1*l1)-(l2*l2))/(2*l1*l2);
+	temp = (l2*sin(theta2Rad))/(l1+(l2*cos(theta2Rad)));
 
     // Inverse Kinematics - thetas in radians
-	theta2Rad = acos((pow(x,2)+pow(y,2)-pow(l1,2)-pow(l2,2))/(2*l1*l2)); //wrist down
- 	theta1Rad = atan(y/x) - atan((l2*sin(mytheta.theta2))/(l1+l2*cos(mytheta.theta2))) ; //wrist down
+	theta2Rad = acos(((x*x)+(y*y)-(l1*l1)-(l2*l2))/(2*l1*l2)); //wrist down
+ 	theta1Rad = atan(y/x) - atan((l2*sin(theta2Rad))/(l1+(l2*cos(theta2Rad)))) ; //wrist down
 	
 	// Radians to angle conversion:
-	mytheta.theta1 = abs(theta1Rad*(180/PI));
-	mytheta.theta2 = abs(theta2Rad*(180/PI));
+	mytheta.theta1 = (theta1Rad*(180/PI));
+	mytheta.theta2 = (theta2Rad*(180/PI));
 	
 	return mytheta; 
 

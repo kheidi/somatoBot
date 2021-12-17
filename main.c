@@ -35,7 +35,7 @@ volatile long int motorBCount;
 //extern volatile int S0, S1, S2, S3, S4;
 
 // --- For position control:
-/*float x0, y0, r, w, t;*/ // for the trajectory function
+float x0, y0, r, w, t, theta1_counts, theta2_counts; // for the trajectory function
 float kp_1, kp_2, kd_1, kd_2, k1_1, k1_2, k0_1, k0_2;  // for the control law
 unsigned int e1, m1, e2, m2; //or float? -->  for the control law
 struct theta mytheta; //get thetas from the struct
@@ -52,14 +52,41 @@ struct theta mytheta; //get thetas from the struct
 interrupt [TIM1_COMPA] void timer1_compa_isr(void)
 {
 
-	StateMachine(motorACount, motorBCount);
-// if (S0)
-// {
-// 	NormalMode()
-// }
+	//StateMachine();
 
-// Test IK Math
-// 	 if ((abs(motorACount))<theta1_counts)
+
+// Normal Mode - motor count: 
+	 if ((abs(motorACount))<theta1_counts)
+	 {
+		runMotor(40, MOTOR_A, CCW);
+	 }
+	 else
+	 {
+		 StopMotorA();
+	 }
+	 if(abs(motorBCount)<theta2_counts)
+	 {
+	
+	 	runMotor(40, MOTOR_B, CW);
+
+	 } 
+	 else 
+	 {
+		StopMotorB();
+	 }
+
+// Normal Mode - Control Law: 
+// 	 e1 = theta1_counts - (motorACount); // our end position was calculated with IK
+// 	 
+// 	 m1 = kp_1*e1;
+// 	 if (m1>1)
+// 	 {
+// 		 m1 = 1;
+// 	 }
+// 	 
+// 	 runMotor(0*100, MOTOR_A, CW);
+
+// 	 	 if ((abs(motorACount))<theta1_counts)
 // 	 {
 // 		runMotor(40, MOTOR_A, CCW);
 // 	 }
@@ -77,7 +104,8 @@ interrupt [TIM1_COMPA] void timer1_compa_isr(void)
 // 	 {
 // 		StopMotorB();
 // 	 }
-// 	
+	 
+	
 
 }
 
@@ -213,17 +241,22 @@ delay_ms(600);
 stopMotors();
 resetAllEncoderCounts();
 // Link Trajectory calculation
-// 			r = 0.03;
-// 			t = 1;
-// 			w = 50; //0.02s
-// 			x0=.03;
-// 			y0=.02;
-// 			mytheta = Trajectory(x0, y0, r, w, t); // variable to get thet1 & theta2
-// 		
-// 		//convert to encoder count to send to the motor
-// 			theta1_counts =  AngleToCountsConversion (mytheta.theta1);
-// 			theta2_counts =  AngleToCountsConversion (mytheta.theta2);
-// 		
+r = 0.03;
+t = 1;
+w = 50; //0.02s
+x0=0;
+y0=0.2920;
+mytheta = Trajectory(x0, y0, r, w, t); // variable to get thet1 & theta2
+ 		
+//convert to encoder count to send to the motor
+theta1_counts =  AngleToCountsConversion (mytheta.theta1);
+theta2_counts =  AngleToCountsConversion (mytheta.theta2);
+
+//theta1_counts = 500;
+//theta2_counts = 500;
+
+kp_1 = 0.2;
+		
 TIMSK1=(0<<ICIE1) | (0<<OCIE1B) | (1<<OCIE1A) | (0<<TOIE1);
 
 // delay_ms(1000);

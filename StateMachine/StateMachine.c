@@ -15,17 +15,17 @@ State machine used to control the robot's simulations based on the button presse
 #include "StateMachine.h" 
 #include "LCD/lcdFunctions.h"
 
-// extern volatile long int motorACount;
-// extern volatile long int motorBCount;
-//extern float theta1_counts, theta2_counts; 
+ extern volatile long int motorACount;
+ extern volatile long int motorBCount;
+ extern float theta1_counts, theta2_counts; 
 
 int S0, S1, S1, S2, S3, S4, S5, BP1, BP2, BP3, BP4, Normal, Noise, ReadyToStart, EStop, Surprise,test, ActionCompleted, Restart;
 int S0 = 1; 
 
-void StateMachine (long int LOCALmotorACount, long int LOCALmotorBCount){
+void StateMachine (){
 	
 float x0, y0, r, w, t;
-int Ntheta1_counts, Ntheta2_counts;
+int theta1_counts, theta2_counts;
 
 struct theta mytheta;
 
@@ -78,89 +78,74 @@ Restart = (S5)&&!S0 &&!S1 &&!S2 &&!S3 &&!S4;
 
 if (ReadyToStart)
 {
-    E_Stop ();
+  //  E_Stop ();
 	setLCDColor(CHARTREUSE);
 	printStringLCD("Ready...");
 	
 }
+
 if (Normal)
 {
     setLCDColor(PINK);
 	printStringLCD("Normal Mode");
-	//resetAllEncoderCounts();
-	// Link Trajectory calculation
-	r = 0.03;
-	t = 1;
-	w = 50; //0.02s
-	x0=.03;
-	y0=.02;
-	mytheta = Trajectory(x0, y0, r, w, t); // variable to get thet1 & theta2
+// 	// Link Trajectory calculation
+// 	r = 0.03;
+// 	t = 1;
+// 	w = 50; //0.02s
+// 	x0=.03;
+// 	y0=.02;
+// 	mytheta = Trajectory(x0, y0, r, w, t); // variable to get thet1 & theta2
+// 
+// //convert to encoder count to send to the motor
+// 	theta1_counts =  AngleToCountsConversion (mytheta.theta1);
+// 	theta2_counts =  AngleToCountsConversion (mytheta.theta2);
 
-//convert to encoder count to send to the motor
-	Ntheta1_counts =  AngleToCountsConversion (mytheta.theta1);
-	Ntheta2_counts =  AngleToCountsConversion (mytheta.theta2);
+	//NormalMode (motorACount, theta1_counts, motorBCount, theta2_counts);
+	ActionCompleted = 1;
 
-	//NormalMode (motorACount, Ntheta1_counts, motorBCount, Ntheta2_counts);
-	if (abs(LOCALmotorACount)<=Ntheta1_counts)
-	{
-		runMotor(15, MOTOR_A, CCW);
-	} else
-	{
-		StopMotorA();
-	}
-	
-	if(LOCALmotorBCount<=Ntheta2_counts)
-	{
-	
-		runMotor(15, MOTOR_B, CW);
-
-	} else 
-	{
-	    StopMotorB();
-	} 
-	
-	if ((abs(LOCALmotorACount)>=Ntheta1_counts)&&(LOCALmotorBCount>=Ntheta2_counts))
-	{
-		ActionCompleted = 1;
-	}
-	
-	
-	
-	
 } 
+
 if (Noise)
 { 
 	setLCDColor(YELLOW);
 	printStringLCD("Noise Added");
-	resetAllEncoderCounts();
-	NoiseMode( LOCALmotorACount, Ntheta1_counts, LOCALmotorBCount, Ntheta2_counts);
+
+// 	// Link Trajectory calculation
+// 	r = 0.03;
+// 	t = 1;
+// 	w = 50; //0.02s
+// 	x0=.03;
+// 	y0=.02;
+// 	mytheta = Trajectory(x0, y0, r, w, t); // variable to get thet1 & theta2
+// 
+// 	//convert to encoder count to send to the motor
+// 	theta1_counts =  AngleToCountsConversion (mytheta.theta1);
+// 	theta2_counts =  AngleToCountsConversion (mytheta.theta2);
+	///NoiseMode( motorACount, theta1_counts, motorBCount, theta2_counts);
 	ActionCompleted = 1;
 	
 }
+
 if (EStop)
 {
 	setLCDColor(RED);
 	printStringLCD("E-Stop Pressed!");
-	 E_Stop();
+	// E_Stop();
 	ActionCompleted = 0;
 	
 }
+
 if (Surprise)
 {
 	//COLOR
 	printStringLCD("MERRY CHRISTMAS!");
 	
 }
+
 if(Restart) 
 {
 	setLCDColor(PURPLE);
 	printStringLCD("Move arm to \ninitial pos-PB3");
 }
-
-
-// if (ActionCompleted)
-// {
-// 		
-// }
 
 }

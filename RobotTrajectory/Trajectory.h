@@ -11,8 +11,8 @@ Revision history    Date         Name                      Reason
 
 Functions used to control the trajectory of a two link robot.
 ************************************************************************************/
-#ifndef MOTORCONTROL_H_
-#define MOTORCONTROL_H_ 
+#ifndef TRAJECTORY_H_
+#define TRAJECTORY_H_ 
 
 
 #include <stdio.h> 

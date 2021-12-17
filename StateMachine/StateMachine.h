@@ -42,4 +42,4 @@ State machine used to control the robot's simulations based on the button presse
 ** ===================================================================
 */
 
-void StateMachine (long int LOCALmotorACount, long int LOCALmotorBCount);
+void StateMachine ();
