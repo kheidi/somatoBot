@@ -45,6 +45,7 @@ struct theta mytheta; //get thetas from the struct
 int mode;
 int xcount;
 
+
 // Timer1 output compare A interrupt service routine
 interrupt [TIM1_COMPA] void timer1_compa_isr(void)
 {
@@ -91,7 +92,7 @@ interrupt [TIM1_COMPA] void timer1_compa_isr(void)
 
 		 runMotor(m1, MOTOR_A, CW);
 		 e1_prev = e1;
-	
+		 }
 
 }
 

@@ -173,40 +173,29 @@ SPCR=(0<<SPIE) | (0<<SPE) | (0<<DORD) | (0<<MSTR) | (0<<CPOL) | (0<<CPHA) | (0<<
 // TWI disabled
 TWCR=(0<<TWEA) | (0<<TWSTA) | (0<<TWSTO) | (0<<TWEN) | (0<<TWIE);
 
-// stopMotors();
-// clearLCD();
-// setLCDbrightness(100);
-// 
-// putchar(0xFE);
-// putchar(0xD1);
-// putchar(16);
-// putchar(2);
-// delay_ms(LCDdelay);
-// 
-// putchar(0xFE);
-// putchar(0xD1);
-// putchar(255);
-// delay_ms(LCDdelay);
- putchar('H');
- putchar('H');
- putchar('H');
- putchar('H');
-putchar('H');
-putchar('H');
-putchar('H');
-putchar('H');
-putchar('H');
-putchar('H');
- puts("Hello");
-//printStringLCD("Rainbow Cycle!");
-// for( i = 0; i < 8; i++ ){
-//       setLCDColor(i);
-// 	  delay_ms(500);
-// 	  if (i == 7)
-// 	  {
-// 		  i=0;
-// 	  }
-//    }
+clearLCD();
+setLCDbrightness(100);
+
+putchar(0xFE);
+putchar(0xD1);
+putchar(16);
+putchar(2);
+delay_ms(LCDdelay);
+
+putchar(0xFE);
+putchar(0xD1);
+putchar(255);
+delay_ms(LCDdelay);
+
+printStringLCD("Rainbow Cycle!");
+for( i = 0; i < 8; i++ ){
+      setLCDColor(i);
+	  delay_ms(500);
+	  if (i == 7)
+	  {
+		  i=0;
+	  }
+   }
 
 
 while (1)
