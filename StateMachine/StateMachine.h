@@ -13,8 +13,8 @@ State machine used to control the robot's simulations based on the button presse
 ************************************************************************************/
 
 #include <stdio.h> 
-#include "PWMDevel/pwmControl.h" // for encoder reset function
-#include "RobotTrajectory/Trajectory.h"
+#include "../PWMDevel/pwmControl.h" // for encoder reset function
+#include "../RobotTrajectory/Trajectory.h"
 #define Buttons PINC
 #define Button1Pressed 0b00000001//PINC.0 - Normal mode
 #define Button2Pressed 0b00000010//PINC.1 - Weird mode

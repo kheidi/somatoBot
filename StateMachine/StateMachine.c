@@ -13,7 +13,8 @@ State machine used to control the robot's simulations based on the button presse
 ************************************************************************************/
 
 #include "StateMachine.h" 
-#include "LCD/lcdFunctions.h"
+#include "../LCD/lcdFunctions.h"
+#include <delay.h>
 
  extern volatile long int motorACount;
  extern volatile long int motorBCount;
@@ -21,7 +22,7 @@ State machine used to control the robot's simulations based on the button presse
 
 int S0, S1, S1, S2, S3, S4, S5, BP1, BP2, BP3, BP4, Normal, Noise, ReadyToStart, EStop, Surprise,test, ActionCompleted, Restart;
 int S0 = 1; 
-
+int counter;
 void StateMachine (){
 	
 float x0, y0, r, w, t;
@@ -61,7 +62,7 @@ if ((Buttons & Button4Pressed) == 0b00001000) {
 // State 4: Button 4 pressed -> E-stop -> yellow buttom
 // State 5: Button 3 pressed -> Restart - move arm initial position
 
-S0 = (S0 || (S3&&BP4) || (S5&&BP3)) &&!S1 &&!S2 &&!S4;
+S0 = (S0 || (S5&&BP3)) &&!S1 &&!S2 &&!S4;
 S1 = (S1 || (S0&&BP1) &&!BP4) &&!S3;
 S2 = (S2 || (S0&&BP2) &&!BP4) &&!S3;
 S3 = (S3 || (S1&&BP4) || (S2&&BP4) || (S4&&BP4)) &&! S0;
@@ -88,40 +89,14 @@ if (Normal)
 {
     setLCDColor(PINK);
 	printStringLCD("Normal Mode");
-// 	// Link Trajectory calculation
-// 	r = 0.03;
-// 	t = 1;
-// 	w = 50; //0.02s
-// 	x0=.03;
-// 	y0=.02;
-// 	mytheta = Trajectory(x0, y0, r, w, t); // variable to get thet1 & theta2
-// 
-// //convert to encoder count to send to the motor
-// 	theta1_counts =  AngleToCountsConversion (mytheta.theta1);
-// 	theta2_counts =  AngleToCountsConversion (mytheta.theta2);
-
-	//NormalMode (motorACount, theta1_counts, motorBCount, theta2_counts);
 	ActionCompleted = 1;
 
 } 
 
 if (Noise)
 { 
-	setLCDColor(YELLOW);
+	setLCDColor(BLUE);
 	printStringLCD("Noise Added");
-
-// 	// Link Trajectory calculation
-// 	r = 0.03;
-// 	t = 1;
-// 	w = 50; //0.02s
-// 	x0=.03;
-// 	y0=.02;
-// 	mytheta = Trajectory(x0, y0, r, w, t); // variable to get thet1 & theta2
-// 
-// 	//convert to encoder count to send to the motor
-// 	theta1_counts =  AngleToCountsConversion (mytheta.theta1);
-// 	theta2_counts =  AngleToCountsConversion (mytheta.theta2);
-	///NoiseMode( motorACount, theta1_counts, motorBCount, theta2_counts);
 	ActionCompleted = 1;
 	
 }
@@ -130,8 +105,13 @@ if (EStop)
 {
 	setLCDColor(RED);
 	printStringLCD("E-Stop Pressed!");
-	// E_Stop();
+	counter++;
 	ActionCompleted = 0;
+	if (counter>50)
+	{
+		counter = 0;
+		S3 = 0;
+	}
 	
 }
 
@@ -145,7 +125,7 @@ if (Surprise)
 if(Restart) 
 {
 	setLCDColor(PURPLE);
-	printStringLCD("Move arm to \ninitial pos-PB3");
+	printStringLCD("Move arm to           initial pos-PB3");
 }
 
 }
