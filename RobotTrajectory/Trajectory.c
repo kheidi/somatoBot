@@ -58,11 +58,6 @@ struct theta Trajectory(float x0, float y0, float r, float w, float t)
    // y = ((r*sin(2*PI*w*t))+y0);
 	x = x0;
 	y = y0;
-	
-	temp = (x*x);
-	temp =  ((x*x)+(y*y)-(l1*l1)-(l2*l2));
-	temp =  ((x*x)+(y*y)-(l1*l1)-(l2*l2))/(2*l1*l2);
-	temp = (l2*sin(theta2Rad))/(l1+(l2*cos(theta2Rad)));
 
     // Inverse Kinematics - thetas in radians
 	theta2Rad = acos(((x*x)+(y*y)-(l1*l1)-(l2*l2))/(2*l1*l2)); //wrist down
@@ -158,8 +153,8 @@ void E_Stop (void)
   e2 = 0;
   mytheta.theta1 = 0;
   mytheta.theta1 = 0;
-  //theta1_counts = 0;
-  //theta2_counts = 0;
+  theta1_counts = 0;
+  theta2_counts = 0;
   resetAllEncoderCounts();
   StopMotorB();
   StopMotorA();

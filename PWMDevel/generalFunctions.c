@@ -37,3 +37,19 @@ long map(long x, long in_min, long in_max, long out_min, long out_max)
 {
     return (x-in_min)*(out_max-out_min)/(in_max-in_min) + out_min;
 }
+
+int flt2fxd(float x){
+	int QI;
+	int WL;
+	int QF;
+	int fixedPoint;
+	
+	WL = 8;
+	
+	QI = floor(log(fabs(x))/log(2)+2);
+	QF = WL-QI;
+	fixedPoint = (int)(x* pow(2,QF));
+	
+	return fixedPoint;
+	
+}

@@ -226,7 +226,7 @@ void runMotor(long percentMaxPower, int motorID, int direction)
 {
     int sendToMotor;
     int speed;
-    sendToMotor = (int)map(percentMaxPower,0,100,140,255); //Converts the percent power to a value from 0 255 for the 8-bit timers
+    sendToMotor = (int)map(percentMaxPower,0,100,153,170); //Converts the percent power to a value from 0 255 for the 8-bit timers
 
     // ------- MOVE MOTOR A
     if (motorID == 0) // 

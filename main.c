@@ -36,9 +36,10 @@ volatile long int motorBCount;
 
 // --- For position control:
 float x0, y0, r, w, t, theta1_counts, theta2_counts; // for the trajectory function
-float kp_1, kp_2, kd_1, kd_2, k1_1, k1_2, k0_1, k0_2;  // for the control law
-unsigned int e1, m1, e2, m2; //or float? -->  for the control law
+float kp_1, kp_2, kd_1, kd_2, k1_1, k1_2, k0_1, k0_2, delta_t;  // for the control law
+signed int e1, m1, e2, m2, e1_prev; //or float? -->  for the control law
 struct theta mytheta; //get thetas from the struct
+int mode;
 
 //(x0,y0) -> initial position of the robot ---- move the robot back to position (x0, y0) always
 //r -> radios of the circle the link will move
@@ -52,39 +53,112 @@ struct theta mytheta; //get thetas from the struct
 interrupt [TIM1_COMPA] void timer1_compa_isr(void)
 {
 
-	//StateMachine();
+//	StateMachine();
 
+	if (mode == 1 || mode == 2)
+	{
+		 if ((abs(motorACount))<theta1_counts)
+		 {
+			runMotor(70, MOTOR_A, CCW);
+		 }
+		 else
+		 {
+			 StopMotorA();
+		 }
+		 if(abs(motorBCount)<theta2_counts)
+		 {
 
-// Normal Mode - motor count: 
-	 if ((abs(motorACount))<theta1_counts)
-	 {
-		runMotor(40, MOTOR_A, CCW);
-	 }
-	 else
-	 {
-		 StopMotorA();
-	 }
-	 if(abs(motorBCount)<theta2_counts)
-	 {
+	 		runMotor(40, MOTOR_B, CW);
+
+		 }
+		 else
+		 {
+			StopMotorB();
+		 }
+
+	}
 	
-	 	runMotor(40, MOTOR_B, CW);
+	if (mode == 3)
+	{
+		e1 = theta1_counts - (motorACount); // our end position was calculated with IK
+		m1 = kp_1*e1;
+		e1 = theta1_counts - motorACount; // our end position was calculated with IK
+		m1 = k0_1*e1 + k1_1*e1_prev;
 
-	 } 
-	 else 
-	 {
-		StopMotorB();
-	 }
+		 if (m1>100)
+		 {
+			 m1 = 100;
+		 }else if (m1<=0)
+		 {
+			 m1 = 0;
+		 }
+
+		 runMotor(m1, MOTOR_A, CW);
+		 e1_prev = e1;
+
+	}
+	
+// Normal Mode - motor count: 
+// 	 if ((abs(motorACount))<theta1_counts)
+// 	 {
+// 		runMotor(40, MOTOR_A, CCW);
+// 	 }
+// 	 else
+// 	 {
+// 		 StopMotorA();
+// 	 }
+// 	 if(abs(motorBCount)<theta2_counts)
+// 	 {
+// 	
+// 	 	runMotor(40, MOTOR_B, CW);
+// 
+// 	 } 
+// 	 else 
+// 	 {
+// 		StopMotorB();
+// 	 }
+
+		  
+		  // Motor Control Laws: 
+
+			//------Command Law: Link 1------
+			//Simple Law:
+			// e1 = theta1_counts - motorACount; // our end position was calculated with IK
+			// m1 = kp_1*e1;
+
+			//PD on Error:
+			//e1 = theta1_counts - motorACount; // our end position was calculated with IK
+			//m1 = k0_1*e1 + k1_1*e1_prev;
+
+
+			//------Command Law: Link 2------
+
+			//Simple Law:
+			// e2 = theta2_counts - motorBCount; // our end position was calculated with IK
+			// m2 = kp_2*e2;
+
+			//PD on Error:
+			//e2 = theta2_counts - motorBCount; // our end position was calculated with IK
+			//m2 = k0_2*e2 + k1_2*e2;
+
 
 // Normal Mode - Control Law: 
 // 	 e1 = theta1_counts - (motorACount); // our end position was calculated with IK
 // 	 
 // 	 m1 = kp_1*e1;
-// 	 if (m1>1)
+// 	e1 = theta1_counts - motorACount; // our end position was calculated with IK
+// 	m1 = k0_1*e1 + k1_1*e1_prev;
+// 	
+// 	 if (m1>100)
 // 	 {
-// 		 m1 = 1;
+// 		 m1 = 100;
+// 	 }else if (m1<=0)
+// 	 {
+// 		 m1 = 0;
 // 	 }
 // 	 
-// 	 runMotor(0*100, MOTOR_A, CW);
+// 	 runMotor(m1, MOTOR_A, CW);
+// 	 e1_prev = e1;
 
 // 	 	 if ((abs(motorACount))<theta1_counts)
 // 	 {
@@ -156,7 +230,7 @@ pwm_init_timer0_A();
 // OC1B output: Disconnected
 // Noise Canceler: Off
 // Input Capture on Falling Edge
-// Timer Period: 2.0001 ms
+// Timer Period: 2.0001 ms !!! Changed to 1 ms
 // Timer1 Overflow Interrupt: Off
 // Input Capture Interrupt: Off
 // Compare A Match Interrupt: On
@@ -252,12 +326,21 @@ mytheta = Trajectory(x0, y0, r, w, t); // variable to get thet1 & theta2
 theta1_counts =  AngleToCountsConversion (mytheta.theta1);
 theta2_counts =  AngleToCountsConversion (mytheta.theta2);
 
-//theta1_counts = 500;
-//theta2_counts = 500;
 
-kp_1 = 0.2;
-		
-TIMSK1=(0<<ICIE1) | (0<<OCIE1B) | (1<<OCIE1A) | (0<<TOIE1);
+
+//Command law gains:
+delta_t = 0.001;
+kp_1 = 0.9;
+kp_2 = 0.1;
+kd_1 = 0.15;
+kd_2 = 0;
+k0_1 = kp_1 + kd_1/delta_t;
+k1_1 = - kd_1/delta_t;
+k0_2 = kp_2 + kd_2/delta_t;
+k1_2 = - kd_2/delta_t;
+// 	
+
+
 
 // delay_ms(1000);
 // 
@@ -302,44 +385,46 @@ TIMSK1=(0<<ICIE1) | (0<<OCIE1B) | (1<<OCIE1A) | (0<<TOIE1);
 //  putchar('S'); //S
  
 #asm("sei")
-
+setLCDColor(GREEN);
+printStringLCD("Ready...");
 	
 while (1)
 
       {
+		  if (PINC & Button1Pressed)
+		  {
+			  theta1_counts =  AngleToCountsConversion (mytheta.theta1);
+			  theta2_counts =  AngleToCountsConversion (mytheta.theta2);
+			  mode = 1;
+			  setLCDColor(BLUE);
+			  printStringLCD("Arm Simulation");
+			  TIMSK1=(0<<ICIE1) | (0<<OCIE1B) | (1<<OCIE1A) | (0<<TOIE1);
+		  }else if (PINC & Button2Pressed)
+		  {
+			  theta1_counts = 1800;
+			  theta2_counts = 1800;
+			  mode = 2;
+			  setLCDColor(PINK);
+			  printStringLCD("Fixed Velocity      Control");
+			  TIMSK1=(0<<ICIE1) | (0<<OCIE1B) | (1<<OCIE1A) | (0<<TOIE1);
+		  }else if (PINC & Button3Pressed)
+		  {
+			  theta1_counts = 1800;
+			  theta2_counts = 1800;
+			  mode = 3;
+			  setLCDColor(PURPLE);
+			  printStringLCD("PD (D on Error)");
+			  TIMSK1=(0<<ICIE1) | (0<<OCIE1B) | (1<<OCIE1A) | (0<<TOIE1);
+		  }else if (PINC & Button4Pressed)
+		  {
+			  mode = 0;
+			  E_Stop();
+			  setLCDColor(GREEN);
+			  printStringLCD("Ready...");
+			  TIMSK1 = 0;
+		  }
 					
-			// Command law gains:
-// 			kp_1 = 0.1;
-// 			kp_2 = 0.1;
-// 			kd_1 = 0;
-// 			kd_2 = 0;
 
-			// k0_1 = Kp_1 + kd_1/delta_t;
-			// k1_1 = - kd_1/delta_t;
-			// k0_2 = Kp_2 + kd_2/delta_t;
-			// k1_2 = - kd_2/delta_t;
-		  
-		  // Motor Control Laws: 
-
-			//------Command Law: Link 1------
-			//Simple Law:
-			// e1 = theta1_counts - motorACount; // our end position was calculated with IK
-			// m1 = kp_1*e1;
-
-			//PD on Error:
-			//e1 = theta1_counts - motorACount; // our end position was calculated with IK
-			//m1 = k0_1*e1 + k1_1*e1;
-
-
-			//------Command Law: Link 2------
-
-			//Simple Law:
-			// e2 = theta2_counts - motorBCount; // our end position was calculated with IK
-			// m2 = kp_2*e2;
-
-			//PD on Error:
-			//e2 = theta2_counts - motorBCount; // our end position was calculated with IK
-			//m2 = k0_2*e2 + k1_2*e2;
 
 
 			// Place your code here
