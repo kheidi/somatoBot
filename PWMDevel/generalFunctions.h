@@ -12,6 +12,12 @@ Revision history    Date         Name                      Reason
 ************************************************************************************/
 #ifndef GENERALFUNCTIONS_H_
 #define GENERALFUNCTIONS_H_
+
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+
 /*
 ** ===================================================================
 ** Method        : map
