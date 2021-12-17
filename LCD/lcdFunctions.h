@@ -42,11 +42,47 @@ Info on LCD: https://cdn-learn.adafruit.com/downloads/pdf/usb-plus-serial-backpa
 #define PURPLE 6
 #define YELLOW 7
 
-
+/*
+** ===================================================================
+** Method        : clearLCD
+**
+** Description   : Clears the LCD
+**
+** ===================================================================
+*/
 void clearLCD(void);
+
+
 void printStringLCD(char *ch);
+
+/*
+** ===================================================================
+** Method        : makePink
+**
+** Description   : Sets LCD color to pink.
+**
+** ===================================================================
+*/
 void makePink(void);
+
+/*
+** ===================================================================
+** Method        : setLCDColor
+**
+** Description   : Set LCD backlight to colors as defined in .h
+**
+** ===================================================================
+*/
 void setLCDColor(char colorMacro);
+
+/*
+** ===================================================================
+** Method        : setLCDbrightness
+**
+** Description   : Sets brightness to user defined value from 0 255
+**
+** ===================================================================
+*/
 void setLCDbrightness(char value);
 
 #endif

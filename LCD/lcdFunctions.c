@@ -114,7 +114,7 @@ void setLCDColor(char colorMacro){
 
 /*
 ** ===================================================================
-** Method        : printStrinkLCD
+** Method        : printStringLCD
 **
 ** Description   : Sets LCD color to pink.
 **
@@ -133,6 +133,14 @@ void printStringLCD(char *ch)
     }
 }
 
+/*
+** ===================================================================
+** Method        : setLCDbrightness
+**
+** Description   : Sets brightness to user defined value from 0 255
+**
+** ===================================================================
+*/
 void setLCDbrightness(char value){
 	putchar(0xFE);
 	putchar(0x99);
