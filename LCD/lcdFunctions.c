@@ -23,81 +23,82 @@
 #include "lcdFunctions.h"
 
 void clearLCD(void){
-	putchar(0xFE);
-	putchar(0x58);
-	delay_ms(LCDdelay);
+// 	putchar(0xFE);
+// 	putchar(0x58);
+// 	delay_ms(LCDdelay);
 }
 void makePink(void){
-	putchar(0xFE);
-	putchar(0xD0);
-	putchar(0xef);
-	putchar(0x00);
-	putchar(0x8c);
-	delay_ms(LCDdelay);
+// 	putchar(0xFE);
+// 	putchar(0xD0);
+// 	putchar(0xef);
+// 	putchar(0x00);
+// 	putchar(0x8c);
+// 	delay_ms(LCDdelay);
 }
 
 void setLCDColor(char colorMacro){
-	putchar(0xFE);
-	putchar(0xD0);
-	if (colorMacro == 0) //red
-	{
-		putchar(0xFF);
-		putchar(0x00);
-		putchar(0x00);
-	}else if (colorMacro == 1) //blue
-	{
-		putchar(0x00);
-		putchar(0xFF);
-		putchar(0x00);
-	}else if (colorMacro == 2) //green
-	{
-		putchar(0x00);
-		putchar(0x00);
-		putchar(0xFF);
-	}else if (colorMacro == 3) //pink
-	{
-		putchar(0xef);
-		putchar(0x00);
-		putchar(0x8c);
-	}else if (colorMacro == 4) //chartreuse
-	{
-		putchar(0xdf);
-		putchar(0xff);
-		putchar(0x00);
-	}else if (colorMacro == 5) //white
-	{
-		putchar(0xff);
-		putchar(0xfa);
-		putchar(0xfa);
-	}else if (colorMacro == 6) //purple
-	{
-		putchar(0x8A);
-		putchar(0x2B);
-		putchar(0xE2);
-	}else if (colorMacro == 7) //yellow
-	{
-		putchar(0xFF);
-		putchar(0xFF);
-		putchar(0x00);
-	}
-	delay_ms(LCDdelay);
+// 	putchar(0xFE);
+// 	putchar(0xD0);
+// 	if (colorMacro == 0) //red
+// 	{
+// 		putchar(0xFF);
+// 		putchar(0x00);
+// 		putchar(0x00);
+// 	}else if (colorMacro == 1) //blue
+// 	{
+// 		putchar(0x00);
+// 		putchar(0xFF);
+// 		putchar(0x00);
+// 	}else if (colorMacro == 2) //green
+// 	{
+// 		putchar(0x00);
+// 		putchar(0x00);
+// 		putchar(0xFF);
+// 	}else if (colorMacro == 3) //pink
+// 	{
+// 		putchar(0xef);
+// 		putchar(0x00);
+// 		putchar(0x8c);
+// 	}else if (colorMacro == 4) //chartreuse
+// 	{
+// 		putchar(0xdf);
+// 		putchar(0xff);
+// 		putchar(0x00);
+// 	}else if (colorMacro == 5) //white
+// 	{
+// 		putchar(0xff);
+// 		putchar(0xfa);
+// 		putchar(0xfa);
+// 	}else if (colorMacro == 6) //purple
+// 	{
+// 		putchar(0x8A);
+// 		putchar(0x2B);
+// 		putchar(0xE2);
+// 	}else if (colorMacro == 7) //yellow
+// 	{
+// 		putchar(0xFF);
+// 		putchar(0xFF);
+// 		putchar(0x00);
+// 	}
+// 	delay_ms(LCDdelay);
 }
 
 void printStringLCD(char *ch)
 {
-	clearLCD();
-	putchar(0xFE);
-	putchar(0xFE);
-    while (*ch != '\0')
-    {
-        putchar(*ch); /* print letter */
-        ch = ch + 1;  /* point to the next letter. */
-    }
+	puts(ch);
+// 	clearLCD();
+// 	putchar(0xFE);
+// 	putchar(0xFE);
+//     while (*ch != '\0')
+//     {
+//         putchar(*ch); /* print letter */
+//         ch = ch + 1;  /* point to the next letter. */
+//     }
 }
 
 void setLCDbrightness(char value){
-	putchar(0xFE);
-	putchar(0x99);
-	putchar(value);
-	delay_ms(LCDdelay);
+// 	putchar(0xFE);
+// 	putchar(0x99);
+// 	putchar(value);
+// 	delay_ms(LCDdelay);
 }
