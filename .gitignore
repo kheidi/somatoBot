@@ -1,5 +1,22 @@
 # User ignores
 Icon?
+.DS_Store
+\test_heidi_notgit
+.vscode
+*.json
+\.obsidian
+
+*.hci
+*.cci
+PWMDevel/Debug
+.vscode
+
+*.cof
+PWMDevel/.vs
+*.fct
+*.prj~
+*.c~
+*.h~
 
 # Prerequisites
 *.d
